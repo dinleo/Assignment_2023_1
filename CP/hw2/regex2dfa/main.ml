@@ -19,10 +19,13 @@ let testcases : (Regex.t * alphabet list) list =
   ]
 
 let match_regex : Regex.t -> alphabet list -> bool
-=fun regex input -> Trans.run_dfa (Trans.regex2dfa regex) input
+=fun regex input -> Trans.run_dfa (Trans.regex2dfa regex) input;;
 
-(* run testcases *)
+Dfa.print (Trans.regex2dfa (CONCAT (CONCAT (STAR (CONCAT (Alpha A, Alpha A)), STAR (CONCAT (Alpha B, Alpha B))), Alpha B)))
+
+(* run testcases
 let _ = 
   List.iter (fun (regex, str) -> 
     prerr_endline (string_of_bool (match_regex regex str)) 
   ) testcases
+*)
