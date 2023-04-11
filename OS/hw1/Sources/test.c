@@ -9,9 +9,9 @@ void push(int v) {
     int ret = syscall(OS2023_PUSH_SYSCALL_NUM, v);
     if (ret == -1) {
         perror("Push failed");
-        return 1;
+        return ;
     } else {
-        printf("Push %d", v)
+        printf("Push %d\n", v);
     }
 }
 
@@ -19,9 +19,9 @@ void pop() {
     int value = syscall(OS2023_POP_SYSCALL_NUM);
     if (value == -1) {
         perror("Pop failed");
-        return 1;
+        return ;
     } else{
-        printf("Pop %d", v)
+        printf("Pop %d\n", value);
     }
 }
 int main() {
@@ -36,3 +36,4 @@ int main() {
 
     return 0;
 }
+
