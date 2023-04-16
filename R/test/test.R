@@ -1,8 +1,5 @@
-library("Lahman");
-s <- subset(Salaries, yearID==2015);
-b <- subset(Batting, yearID==2015);
-p <- subset(Pitching, yearID==2015);
-x <- sort.list(s$salary);
+x <- matrix(0, 20, 3)
+s <- c(1,2)
+x[20*(s-1) + 1:20] <- 1
 
-x;
-quan
+x
