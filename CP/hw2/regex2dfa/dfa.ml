@@ -1,4 +1,5 @@
 open Regex
+open BatSet
 
 type state = Nfa.state BatSet.t (* A DFA state is a set of NFA states *)
 type states = state BatSet.t 

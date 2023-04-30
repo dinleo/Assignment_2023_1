@@ -90,3 +90,55 @@ let spy2py_expr expr =
 
 let string_of_stmt stmt = Frontend.Ast2string.string_of_stmt 0 (spy2py_stmt stmt)
 let string_of_expr expr = Frontend.Ast2string.string_of_expr (spy2py_expr expr)
+
+let print_boolop = fun op ->
+    match op with
+        | And -> "And"
+        | Or -> "Or"
+
+let print_binop = fun op ->
+    match op with
+        | Add -> "Add"
+        | Sub -> "Sub"
+        | Mult -> "Mult"
+        | Div -> "Div"
+        | Mod -> "Mod"
+        | Pow -> "Pow"
+
+let rec print_expr = fun expr ->
+    match expr with
+   | BoolOp(op, hd::_) -> "BoolOp(" ^ (print_boolop op) ^ ", " ^  (print_expr hd) ^ ")"
+   | BoolOp _ -> "BoolOp"
+   | BinOp(e1, op, e2) -> "BinOp(" ^ (print_expr e1) ^ " " ^ (print_binop op) ^ " " ^ (print_expr e2) ^")"
+   | UnaryOp _ -> "UnaryOp"
+   | IfExp _ -> "IfExp"
+   | ListComp _ -> "ListComp"
+   | Compare _ -> "Compare"
+   | Call (e1, _) -> "Call(" ^ (print_expr e1) ^ ")"
+   | Constant _ -> "Constant"
+   | Attribute _ -> "Attribute"
+   | Subscript _ -> "Subscript"
+   | Name(i) -> "Name(" ^ i ^ ")"
+   | List _ -> "List"
+   | Lambda _ -> "Lambda"
+   | Tuple _ -> "Tuple"
+
+let print_stmt = fun stmt ->
+   match stmt with
+   | FunctionDef (i,_,_) -> "FunctionDef(" ^ i ^ ")"
+   | Return None -> "Return(None)"
+   | Return Some(e) -> "Return(" ^ (print_expr e) ^ ")"
+   | Assign (hd::_, e) -> "Assign(" ^ (print_expr hd) ^ "," ^ (print_expr e) ^ ")"
+   | Assign _ -> "Assign"
+   | AugAssign _ -> "AugAssign"
+   | For (e1,e2,_) -> "For(" ^ (print_expr e1) ^ "," ^ (print_expr e2) ^ ")"
+   | While _ -> "While"
+   | If _ -> "If"
+   | Assert _ -> "Assert"
+   | Expr _ -> "Expr"
+   | Break -> "Break"
+   | Pass -> "Pass"
+   | Continue -> "Continue"
+
+
+

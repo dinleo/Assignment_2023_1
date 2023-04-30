@@ -1,4 +1,5 @@
 open Regex
+open Nfa
 
 exception Not_implemented
 

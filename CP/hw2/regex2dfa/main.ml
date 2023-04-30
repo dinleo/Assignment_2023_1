@@ -1,4 +1,5 @@
 open Regex
+open Trans
 
 let testcases : (Regex.t * alphabet list) list = 
   [ 
