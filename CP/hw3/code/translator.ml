@@ -99,7 +99,7 @@ let rec translate_expr expr = ( match expr with
         let tmp1 = new_temp_var() in
         let lb1 = new_label() in
         let const_spvm = (match c with
-            | Spy.CInt(i) -> Spvm.INT_OF_STR(tmp1, string_of_int i)
+            | Spy.CInt(i) -> Spvm.COPYC(tmp1, i)
             | Spy.CString(s) -> Spvm.COPYS(tmp1, s)
             | Spy.CBool(true) -> Spvm.COPYC(tmp1, 1)
             | Spy.CBool(false) -> Spvm.COPYC(tmp1, 0)
@@ -238,4 +238,4 @@ let eop = [(new_label(), Spvm.HALT)] in
 let program = List.fold_left (fun prog stmt ->
 let spvm_stmt = translate_stmt stmt in
 prog @ spvm_stmt) [] p in
-program @ eop
+[1, Spvm.SKIP] @ program @ eop
