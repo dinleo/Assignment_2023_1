@@ -1,4 +1,4 @@
-(executable 
+(executable
   (name main)
   (public_name pycompiler)
   (libraries 
