@@ -16362,7 +16362,7 @@ load model from model.bin
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span><span class="p">,</span> <span class="n">files</span>
@@ -16398,195 +16398,8 @@ load model from model.bin
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Drive already mounted at /mnt/; to attempt to forcibly remount, call drive.mount(&#34;/mnt/&#34;, force_remount=True).
-[NbConvertApp] WARNING | pattern &#39;/mnt/My Drive/Colab Notebooks/Assignment4.ipynb&#39; matched no files
-This application is used to convert notebook files (*.ipynb)
-        to various other formats.
-
-        WARNING: THE COMMANDLINE INTERFACE MAY CHANGE IN FUTURE RELEASES.
-
-Options
-=======
-The options below are convenience aliases to configurable class-options,
-as listed in the &#34;Equivalent to&#34; description-line of the aliases.
-To see all configurable class-options for some &lt;cmd&gt;, use:
-    &lt;cmd&gt; --help-all
-
---debug
-    set log level to logging.DEBUG (maximize logging output)
-    Equivalent to: [--Application.log_level=10]
---show-config
-    Show the application&#39;s configuration (human-readable format)
-    Equivalent to: [--Application.show_config=True]
---show-config-json
-    Show the application&#39;s configuration (json format)
-    Equivalent to: [--Application.show_config_json=True]
---generate-config
-    generate default config file
-    Equivalent to: [--JupyterApp.generate_config=True]
--y
-    Answer yes to any questions instead of prompting.
-    Equivalent to: [--JupyterApp.answer_yes=True]
---execute
-    Execute the notebook prior to export.
-    Equivalent to: [--ExecutePreprocessor.enabled=True]
---allow-errors
-    Continue notebook execution even if one of the cells throws an error and include the error message in the cell output (the default behaviour is to abort conversion). This flag is only relevant if &#39;--execute&#39; was specified, too.
-    Equivalent to: [--ExecutePreprocessor.allow_errors=True]
---stdin
-    read a single notebook file from stdin. Write the resulting notebook with default basename &#39;notebook.*&#39;
-    Equivalent to: [--NbConvertApp.from_stdin=True]
---stdout
-    Write notebook output to stdout instead of files.
-    Equivalent to: [--NbConvertApp.writer_class=StdoutWriter]
---inplace
-    Run nbconvert in place, overwriting the existing notebook (only
-            relevant when converting to notebook format)
-    Equivalent to: [--NbConvertApp.use_output_suffix=False --NbConvertApp.export_format=notebook --FilesWriter.build_directory=]
---clear-output
-    Clear output of current file and save in place,
-            overwriting the existing notebook.
-    Equivalent to: [--NbConvertApp.use_output_suffix=False --NbConvertApp.export_format=notebook --FilesWriter.build_directory= --ClearOutputPreprocessor.enabled=True]
---no-prompt
-    Exclude input and output prompts from converted document.
-    Equivalent to: [--TemplateExporter.exclude_input_prompt=True --TemplateExporter.exclude_output_prompt=True]
---no-input
-    Exclude input cells and output prompts from converted document.
-            This mode is ideal for generating code-free reports.
-    Equivalent to: [--TemplateExporter.exclude_output_prompt=True --TemplateExporter.exclude_input=True --TemplateExporter.exclude_input_prompt=True]
---allow-chromium-download
-    Whether to allow downloading chromium if no suitable version is found on the system.
-    Equivalent to: [--WebPDFExporter.allow_chromium_download=True]
---disable-chromium-sandbox
-    Disable chromium security sandbox when converting to PDF..
-    Equivalent to: [--WebPDFExporter.disable_sandbox=True]
---show-input
-    Shows code input. This flag is only useful for dejavu users.
-    Equivalent to: [--TemplateExporter.exclude_input=False]
---embed-images
-    Embed the images as base64 dataurls in the output. This flag is only useful for the HTML/WebPDF/Slides exports.
-    Equivalent to: [--HTMLExporter.embed_images=True]
---sanitize-html
-    Whether the HTML in Markdown cells and cell outputs should be sanitized..
-    Equivalent to: [--HTMLExporter.sanitize_html=True]
---log-level=&lt;Enum&gt;
-    Set the log level by value or name.
-    Choices: any of [0, 10, 20, 30, 40, 50, &#39;DEBUG&#39;, &#39;INFO&#39;, &#39;WARN&#39;, &#39;ERROR&#39;, &#39;CRITICAL&#39;]
-    Default: 30
-    Equivalent to: [--Application.log_level]
---config=&lt;Unicode&gt;
-    Full path of a config file.
-    Default: &#39;&#39;
-    Equivalent to: [--JupyterApp.config_file]
---to=&lt;Unicode&gt;
-    The export format to be used, either one of the built-in formats
-            [&#39;asciidoc&#39;, &#39;custom&#39;, &#39;html&#39;, &#39;latex&#39;, &#39;markdown&#39;, &#39;notebook&#39;, &#39;pdf&#39;, &#39;python&#39;, &#39;rst&#39;, &#39;script&#39;, &#39;slides&#39;, &#39;webpdf&#39;]
-            or a dotted object name that represents the import path for an
-            ``Exporter`` class
-    Default: &#39;&#39;
-    Equivalent to: [--NbConvertApp.export_format]
---template=&lt;Unicode&gt;
-    Name of the template to use
-    Default: &#39;&#39;
-    Equivalent to: [--TemplateExporter.template_name]
---template-file=&lt;Unicode&gt;
-    Name of the template file to use
-    Default: None
-    Equivalent to: [--TemplateExporter.template_file]
---theme=&lt;Unicode&gt;
-    Template specific theme(e.g. the name of a JupyterLab CSS theme distributed
-    as prebuilt extension for the lab template)
-    Default: &#39;light&#39;
-    Equivalent to: [--HTMLExporter.theme]
---sanitize_html=&lt;Bool&gt;
-    Whether the HTML in Markdown cells and cell outputs should be sanitized.This
-    should be set to True by nbviewer or similar tools.
-    Default: False
-    Equivalent to: [--HTMLExporter.sanitize_html]
---writer=&lt;DottedObjectName&gt;
-    Writer class used to write the
-                                        results of the conversion
-    Default: &#39;FilesWriter&#39;
-    Equivalent to: [--NbConvertApp.writer_class]
---post=&lt;DottedOrNone&gt;
-    PostProcessor class used to write the
-                                        results of the conversion
-    Default: &#39;&#39;
-    Equivalent to: [--NbConvertApp.postprocessor_class]
---output=&lt;Unicode&gt;
-    overwrite base name use for output files.
-                can only be used when converting one notebook at a time.
-    Default: &#39;&#39;
-    Equivalent to: [--NbConvertApp.output_base]
---output-dir=&lt;Unicode&gt;
-    Directory to write output(s) to. Defaults
-                                  to output to the directory of each notebook. To recover
-                                  previous default behaviour (outputting to the current
-                                  working directory) use . as the flag value.
-    Default: &#39;&#39;
-    Equivalent to: [--FilesWriter.build_directory]
---reveal-prefix=&lt;Unicode&gt;
-    The URL prefix for reveal.js (version 3.x).
-            This defaults to the reveal CDN, but can be any url pointing to a copy
-            of reveal.js.
-            For speaker notes to work, this must be a relative path to a local
-            copy of reveal.js: e.g., &#34;reveal.js&#34;.
-            If a relative path is given, it must be a subdirectory of the
-            current directory (from which the server is run).
-            See the usage documentation
-            (https://nbconvert.readthedocs.io/en/latest/usage.html#reveal-js-html-slideshow)
-            for more details.
-    Default: &#39;&#39;
-    Equivalent to: [--SlidesExporter.reveal_url_prefix]
---nbformat=&lt;Enum&gt;
-    The nbformat version to write.
-            Use this to downgrade notebooks.
-    Choices: any of [1, 2, 3, 4]
-    Default: 4
-    Equivalent to: [--NotebookExporter.nbformat_version]
-
-Examples
---------
-
-    The simplest way to use nbconvert is
-
-            &gt; jupyter nbconvert mynotebook.ipynb --to html
-
-            Options include [&#39;asciidoc&#39;, &#39;custom&#39;, &#39;html&#39;, &#39;latex&#39;, &#39;markdown&#39;, &#39;notebook&#39;, &#39;pdf&#39;, &#39;python&#39;, &#39;rst&#39;, &#39;script&#39;, &#39;slides&#39;, &#39;webpdf&#39;].
-
-            &gt; jupyter nbconvert --to latex mynotebook.ipynb
-
-            Both HTML and LaTeX support multiple output templates. LaTeX includes
-            &#39;base&#39;, &#39;article&#39; and &#39;report&#39;.  HTML includes &#39;basic&#39;, &#39;lab&#39; and
-            &#39;classic&#39;. You can specify the flavor of the format used.
-
-            &gt; jupyter nbconvert --to html --template lab mynotebook.ipynb
-
-            You can also pipe the output to stdout, rather than a file
-
-            &gt; jupyter nbconvert mynotebook.ipynb --stdout
-
-            PDF is generated via latex
-
-            &gt; jupyter nbconvert mynotebook.ipynb --to pdf
-
-            You can get (and serve) a Reveal.js-powered slideshow
-
-            &gt; jupyter nbconvert myslides.ipynb --to slides --post serve
-
-            Multiple notebooks can be given at the command line in a couple of
-            different ways:
-
-            &gt; jupyter nbconvert notebook*.ipynb
-            &gt; jupyter nbconvert notebook1.ipynb notebook2.ipynb
-
-            or you can specify the notebooks list in a config file, containing::
-
-                c.NbConvertApp.notebooks = [&#34;my_notebook.ipynb&#34;]
-
-            &gt; jupyter nbconvert --config mycfg.py
-
-To see all available configurables, use `--help-all`.
-
+[NbConvertApp] Converting notebook /mnt/My Drive/Colab Notebooks/Assignment4의_사본.ipynb to html
+[NbConvertApp] Writing 1054002 bytes to /content/Assignment4.html
 </pre>
 </div>
 </div>
@@ -16597,24 +16410,74 @@ To see all available configurables, use `--help-all`.
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-16-4c50f6428417&gt;</span> in <span class="ansi-cyan-fg">&lt;cell line: 11&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      9</span> 
-<span class="ansi-green-intense-fg ansi-bold">     10</span> get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>system<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;jupyter nbconvert &#39;{filepath}&#39; --output &#39;{output_file}&#39;&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 11</span><span class="ansi-red-fg"> </span>files<span class="ansi-blue-fg">.</span>download<span class="ansi-blue-fg">(</span>output_file<span class="ansi-blue-fg">)</span>
 
-<span class="ansi-green-fg">/usr/local/lib/python3.10/dist-packages/google/colab/files.py</span> in <span class="ansi-cyan-fg">download</span><span class="ansi-blue-fg">(filename)</span>
-<span class="ansi-green-intense-fg ansi-bold">    220</span>   <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> _os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>exists<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    221</span>     msg <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;Cannot find file: {}&#39;</span><span class="ansi-blue-fg">.</span>format<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 222</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">raise</span> FileNotFoundError<span class="ansi-blue-fg">(</span>msg<span class="ansi-blue-fg">)</span>  <span class="ansi-red-fg"># pylint: disable=undefined-variable</span>
-<span class="ansi-green-intense-fg ansi-bold">    223</span> 
-<span class="ansi-green-intense-fg ansi-bold">    224</span>   comm_manager <span class="ansi-blue-fg">=</span> _IPython<span class="ansi-blue-fg">.</span>get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>kernel<span class="ansi-blue-fg">.</span>comm_manager
 
-<span class="ansi-red-fg">FileNotFoundError</span>: Cannot find file: /content/Assignment4.html</pre>
+
+<div id="b719b2cb-1fa3-47fa-8e04-34eee6d64ffd" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+<script type="text/javascript">
+var element = document.getElementById('b719b2cb-1fa3-47fa-8e04-34eee6d64ffd');
+
+    async function download(id, filename, size) {
+      if (!google.colab.kernel.accessAllowed) {
+        return;
+      }
+      const div = document.createElement('div');
+      const label = document.createElement('label');
+      label.textContent = `Downloading "${filename}": `;
+      div.appendChild(label);
+      const progress = document.createElement('progress');
+      progress.max = size;
+      div.appendChild(progress);
+      document.body.appendChild(div);
+
+      const buffers = [];
+      let downloaded = 0;
+
+      const channel = await google.colab.kernel.comms.open(id);
+      // Send a message to notify the kernel that we're ready.
+      channel.send({})
+
+      for await (const message of channel.messages) {
+        // Send a message to notify the kernel that we're ready.
+        channel.send({})
+        if (message.buffers) {
+          for (const buffer of message.buffers) {
+            buffers.push(buffer);
+            downloaded += buffer.byteLength;
+            progress.value = downloaded;
+          }
+        }
+      }
+      const blob = new Blob(buffers, {type: 'application/binary'});
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = filename;
+      div.appendChild(a);
+      a.click();
+      div.remove();
+    }
+  
+</script>
 </div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+
+<div id="47972935-74d0-4cea-8d95-2105e7e526f7" class="jp-RenderedJavaScript jp-OutputArea-output " data-mime-type="application/javascript">
+<script type="text/javascript">
+var element = document.getElementById('47972935-74d0-4cea-8d95-2105e7e526f7');
+download("download_c0dc5570-3ebb-4813-8d96-7238fcc73bd5", "Assignment4.html", 1055529)
+</script>
+</div>
+
 </div>
 
 </div>
