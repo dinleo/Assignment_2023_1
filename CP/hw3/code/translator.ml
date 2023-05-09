@@ -13,7 +13,9 @@ exception Not_Implemented of string
 exception Error of string (* raise when syntax is beyond Spy *)
 
 let translate : Spy.program -> Spvm.program = fun p ->
-let rec translate_expr expr = ( match expr with
+let rec translate_expr expr =
+(*    let _ = print_endline("expr: " ^ Spy.print_expr expr) in*)
+    ( match expr with
     | Spy.BoolOp(op, exprs) ->
         let spvm_op = (match op with
             | Spy.And -> Spvm.AND
@@ -85,16 +87,32 @@ let rec translate_expr expr = ( match expr with
         let cmds = cmds1 @ cmds2 @ [(new_label(), Spvm.ASSIGNV(tmp1, spvm_op, id1, id2))] in
         (cmds, tmp1)
     | Spy.Call(e1, exprs) ->
-        let func_cmds, func_id = translate_expr e1 in
         let arg_cmds, arg_ids =
             List.fold_left (fun (acc_cmds, acc_ids) arg_expr ->
             let arg_cmd, arg_id = translate_expr arg_expr in
             acc_cmds @ arg_cmd, acc_ids @ [arg_id]
             ) ([], []) exprs in
-        let tmp1 = new_temp_var() in
-        let lb1 = new_label() in
-        let cmds = func_cmds @ arg_cmds @ [(lb1, Spvm.CALL(tmp1, func_id, arg_ids))] in
-        (cmds, tmp1)
+        ( match e1 with
+            | Spy.Name("print") -> (
+                let tmp_blk = new_temp_var() in
+                let blank_cmds = [(new_label(), Spvm.COPYS(tmp_blk, " "))] in
+                let print_cmds =
+                    List.fold_left (fun acc_cmds arg_id ->
+                    acc_cmds @ [(new_label(),Spvm.WRITE(arg_id));(new_label(),Spvm.WRITE(tmp_blk))]) blank_cmds arg_ids
+                in
+                let tmp_enter = new_temp_var() in
+                let tmp_none = new_temp_var() in
+                let cmds = arg_cmds @ print_cmds @ [(new_label(), Spvm.COPYS(tmp_enter, "\n"));(new_label(), Spvm.WRITE(tmp_enter));(new_label(), Spvm.COPYN(tmp_none))] in
+                (cmds, tmp_none)
+            )
+            | _ -> (
+                let tmp1 = new_temp_var() in
+                let lb1 = new_label() in
+                let func_cmds, func_id = translate_expr e1 in
+                let cmds = func_cmds @ arg_cmds @ [(lb1, Spvm.CALL(tmp1, func_id, arg_ids))] in
+                (cmds, tmp1)
+            )
+        )
     | Spy.Constant(c) ->
         let tmp1 = new_temp_var() in
         let lb1 = new_label() in
@@ -140,7 +158,9 @@ let rec translate_expr expr = ( match expr with
 (*    | Spy.Lambda(args, body) ->*)
     | _ -> raise (Not_Implemented ("expr: "^(Spy.print_expr expr)))
 ) in
-let rec translate_stmt (s:Spy.stmt): Spvm.program = (match s with
+let rec translate_stmt (s:Spy.stmt): Spvm.program =
+(*    let _ = print_endline("stmt: " ^ Spy.print_stmt s) in*)
+    (match s with
     | Spy.FunctionDef(name, args, body) ->
         let body_cmds = List.fold_left (fun spvm_instrs stmt ->
         let stmt_cmds = translate_stmt stmt in

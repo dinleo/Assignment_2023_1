@@ -135,7 +135,7 @@ let print_stmt = fun stmt ->
    | While _ -> "While"
    | If _ -> "If"
    | Assert _ -> "Assert"
-   | Expr _ -> "Expr"
+   | Expr e -> "Expr(" ^ (print_expr e) ^ ")"
    | Break -> "Break"
    | Pass -> "Pass"
    | Continue -> "Continue"
