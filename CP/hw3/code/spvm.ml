@@ -697,7 +697,7 @@ let move : state -> state option
   | _ -> raise (Failure ("move: must not happen " ^ string_of_instr 0 (get_instr state)))
 
 let rec loop state count =
-  let _ = print_endline ("complete: " ^ string_of_int count) in
+(*  let _ = print_endline ("complete: " ^ string_of_int count) in*)
   match move state with 
   | None -> print_endline ("The number of instructions executed : " ^ string_of_int count)
   | Some state' -> loop state' (count+1)

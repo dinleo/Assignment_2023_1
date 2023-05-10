@@ -14,7 +14,7 @@ exception Error of string (* raise when syntax is beyond Spy *)
 
 let translate : Spy.program -> Spvm.program = fun p ->
 let rec translate_expr expr =
-(*    let _ = print_endline("expr: " ^ Spy.print_expr expr) in*)
+    let _ = print_endline("expr: " ^ Spy.print_expr expr) in
     ( match expr with
     | Spy.BoolOp(op, exprs) ->
         let spvm_op = (match op with
@@ -159,7 +159,7 @@ let rec translate_expr expr =
     | _ -> raise (Not_Implemented ("expr: "^(Spy.print_expr expr)))
 ) in
 let rec translate_stmt (s:Spy.stmt): Spvm.program =
-(*    let _ = print_endline("stmt: " ^ Spy.print_stmt s) in*)
+    let _ = print_endline("stmt: " ^ Spy.print_stmt s) in
     (match s with
     | Spy.FunctionDef(name, args, body) ->
         let body_cmds = List.fold_left (fun spvm_instrs stmt ->
