@@ -114,7 +114,7 @@ let rec print_expr = fun expr ->
     | IfExp _ -> "IfExp"
     | ListComp _ -> "ListComp"
     | Compare _ -> "Compare"
-    | Call (e1, _) -> "Call(" ^ (print_expr e1) ^ ")"
+    | Call (e1, el) -> "Call(" ^ (print_expr e1) ^ ", [" ^ (List.fold_left (fun acc ea -> acc ^ (print_expr ea) ^ ",") "" el) ^ "])"
     | Constant c -> ( let sc = (match c with
         | CInt (i) -> "int " ^ (string_of_int i)
         | CString (s) -> "str " ^ s
@@ -123,20 +123,20 @@ let rec print_expr = fun expr ->
         "Constant(" ^ sc ^ ")"
     )
     | Attribute _ -> "Attribute"
-    | Subscript _ -> "Subscript"
+    | Subscript (e1, e2) -> "Subscript(" ^ (print_expr e1) ^ ", " ^ (print_expr e2) ^ ")"
     | Name(i) -> "Name(" ^ i ^ ")"
     | List _ -> "List"
     | Lambda _ -> "Lambda"
     | Tuple _ -> "Tuple"
 
-let print_stmt = fun stmt ->
+let rec print_stmt = fun stmt ->
    match stmt with
    | FunctionDef (i,_,_) -> "FunctionDef(" ^ i ^ ")"
    | Return None -> "Return(None)"
    | Return Some(e) -> "Return(" ^ (print_expr e) ^ ")"
    | Assign (el, e) -> "Assign([" ^ (List.fold_left (fun acc ea -> acc ^ (print_expr ea) ^ ",") "" el) ^ "]," ^ (print_expr e) ^ ")"
    | AugAssign _ -> "AugAssign"
-   | For (e1,e2,_) -> "For(" ^ (print_expr e1) ^ "," ^ (print_expr e2) ^ ")"
+   | For (e1,e2,sl) -> "For(" ^ (print_expr e1) ^ ", " ^ (print_expr e2) ^ ", [" ^ (List.fold_left (fun acc sa -> acc ^ (print_stmt sa) ^ ",") "" sl) ^ "])"
    | While _ -> "While"
    | If _ -> "If"
    | Assert _ -> "Assert"

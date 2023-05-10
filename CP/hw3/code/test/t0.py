@@ -1,3 +1,2 @@
-(a, (b, c)) = [1, [2, "abc"]]
-print(a, b, c)
-
+for i in range(1,4):
+    print(i)

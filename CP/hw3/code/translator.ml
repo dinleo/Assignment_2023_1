@@ -105,6 +105,23 @@ let rec translate_expr expr =
                 let cmds = arg_cmds @ print_cmds @ [(new_label(), Spvm.COPYS(tmp_enter, "\n"));(new_label(), Spvm.WRITE(tmp_enter));(new_label(), Spvm.COPYN(tmp_none))] in
                 (cmds, tmp_none)
             )
+            | Spy.Name("input") -> (
+                let print_cmds, _ = translate_expr (Spy.Call(Spy.Name("print"), exprs)) in
+                let tmp_read = new_temp_var() in
+                let read_cmds = [(new_label(), Spvm.READ(tmp_read))] in
+                let cmds = print_cmds @ read_cmds in
+                (cmds, tmp_read)
+            )
+            | Spy.Name("range") -> (
+                match arg_ids with
+                | [low;high] -> (
+                    let tmp_range = new_temp_var() in
+                    let range_cmds = [(new_label(), Spvm.RANGE(tmp_range,low,high))] in
+                    let cmds = arg_cmds @ range_cmds in
+                    (cmds, tmp_range)
+                )
+                | _ -> raise (Error "Range arg unmatch")
+            )
             | _ -> (
                 let tmp1 = new_temp_var() in
                 let lb1 = new_label() in
@@ -203,13 +220,28 @@ let rec translate_stmt (s:Spy.stmt): Spvm.program =
     | Spy.AugAssign(e1, op, e2) ->
         let assign_stmt = Spy.Assign([e1], Spy.BinOp(e1, op, e2)) in
         translate_stmt(assign_stmt)
-(*    | Spy.For(iter, seq, body) ->*)
+    | Spy.For(iter, seq, body) ->
+        let idx_id = new_temp_var() in
+        let idx_cmd = [(new_label(), Spvm.COPYC(idx_id, 0))] in
+        let iter_id = ( match iter with
+            | Spy.Name(id) -> id
+            | _ -> raise (Error "Iteration expression not supported in Spy")
+        ) in
+        let seq_cmd, seq_id = (translate_expr seq) in
+        let len_id = new_temp_var() in
+        let len_cmd = [(new_label(), Spvm.ITER_LENGTH(len_id, seq_id))] in
+        let cond = Spy.Compare(Spy.Name(idx_id), Spy.Lt, Spy.Name(len_id)) in
+        let prog = [
+            Spy.Assign([Spy.Name(iter_id)],Spy.Subscript(Spy.Name(seq_id), Spy.Name(idx_id)));
+            Spy.Assign([Spy.Name(idx_id)],Spy.BinOp(Name(idx_id), Spy.Add, Spy.Constant(Spy.CInt(1))))
+        ] @ body in
+        idx_cmd @ seq_cmd @ len_cmd @ (translate_stmt (Spy.While(cond, prog)))
     | Spy.While(cond, prog) ->
         let start_lb = (new_label()) in
         let end_lb = (new_label()) in
         let start_cmd = [(start_lb, Spvm.SKIP)] in
         let ends_cmd = [(end_lb, Spvm.SKIP)] in
-        let cond_cmd, cond_id = translate_expr cond in
+        let cond_cmd, cond_id = (translate_expr cond) in
         let prog_cmds = (List.fold_left (fun acc_stmts stmt ->
             let stmt_cmds = translate_stmt stmt in
             acc_stmts @ stmt_cmds
