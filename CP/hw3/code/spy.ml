@@ -107,29 +107,34 @@ let print_binop = fun op ->
 
 let rec print_expr = fun expr ->
     match expr with
-   | BoolOp(op, hd::_) -> "BoolOp(" ^ (print_boolop op) ^ ", " ^  (print_expr hd) ^ ")"
-   | BoolOp _ -> "BoolOp"
-   | BinOp(e1, op, e2) -> "BinOp(" ^ (print_expr e1) ^ " " ^ (print_binop op) ^ " " ^ (print_expr e2) ^")"
-   | UnaryOp _ -> "UnaryOp"
-   | IfExp _ -> "IfExp"
-   | ListComp _ -> "ListComp"
-   | Compare _ -> "Compare"
-   | Call (e1, _) -> "Call(" ^ (print_expr e1) ^ ")"
-   | Constant _ -> "Constant"
-   | Attribute _ -> "Attribute"
-   | Subscript _ -> "Subscript"
-   | Name(i) -> "Name(" ^ i ^ ")"
-   | List _ -> "List"
-   | Lambda _ -> "Lambda"
-   | Tuple _ -> "Tuple"
+    | BoolOp(op, hd::_) -> "BoolOp(" ^ (print_boolop op) ^ ", " ^  (print_expr hd) ^ ")"
+    | BoolOp _ -> "BoolOp"
+    | BinOp(e1, op, e2) -> "BinOp(" ^ (print_expr e1) ^ " " ^ (print_binop op) ^ " " ^ (print_expr e2) ^")"
+    | UnaryOp _ -> "UnaryOp"
+    | IfExp _ -> "IfExp"
+    | ListComp _ -> "ListComp"
+    | Compare _ -> "Compare"
+    | Call (e1, _) -> "Call(" ^ (print_expr e1) ^ ")"
+    | Constant c -> ( let sc = (match c with
+        | CInt (i) -> "int " ^ (string_of_int i)
+        | CString (s) -> "str " ^ s
+        | CBool (b) -> "bool " ^ (string_of_bool b)
+        | CNone -> "None") in
+        "Constant(" ^ sc ^ ")"
+    )
+    | Attribute _ -> "Attribute"
+    | Subscript _ -> "Subscript"
+    | Name(i) -> "Name(" ^ i ^ ")"
+    | List _ -> "List"
+    | Lambda _ -> "Lambda"
+    | Tuple _ -> "Tuple"
 
 let print_stmt = fun stmt ->
    match stmt with
    | FunctionDef (i,_,_) -> "FunctionDef(" ^ i ^ ")"
    | Return None -> "Return(None)"
    | Return Some(e) -> "Return(" ^ (print_expr e) ^ ")"
-   | Assign (hd::_, e) -> "Assign(" ^ (print_expr hd) ^ "," ^ (print_expr e) ^ ")"
-   | Assign _ -> "Assign"
+   | Assign (el, e) -> "Assign([" ^ (List.fold_left (fun acc ea -> acc ^ (print_expr ea) ^ ",") "" el) ^ "]," ^ (print_expr e) ^ ")"
    | AugAssign _ -> "AugAssign"
    | For (e1,e2,_) -> "For(" ^ (print_expr e1) ^ "," ^ (print_expr e2) ^ ")"
    | While _ -> "While"

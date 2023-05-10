@@ -178,26 +178,28 @@ let rec translate_stmt (s:Spy.stmt): Spvm.program =
         (rcmds @ [(new_label()), Spvm.RETURN(rids)])
     | Spy.Assign(targets, value) ->
         let val_cmds, val_id = translate_expr value in
-        let rec get_tar_cmds explist idx list_id = (match explist with
+        let rec get_unpack_cmds explist idx list_id = (match explist with
             | [] -> []
             | Spy.Name(id)::tl ->
                 let idx_tmp = new_temp_var() in
                 [(new_label(), Spvm.COPYC(idx_tmp, idx));
-                 (new_label(), Spvm.ITER_LOAD(id, list_id, idx_tmp))] @ (get_tar_cmds tl (idx+1) list_id)
+                 (new_label(), Spvm.ITER_LOAD(id, list_id, idx_tmp))] @ (get_unpack_cmds tl (idx+1) list_id)
             | Spy.List(exprs)::tl | Spy.Tuple(exprs)::tl ->
                 let inner_list_id = new_temp_var() in
                 let idx_tmp = new_temp_var() in
                 [(new_label(), Spvm.COPYC(idx_tmp, idx));
                 (new_label(), Spvm.ITER_LOAD(inner_list_id, list_id, idx_tmp))]
-                @ (get_tar_cmds exprs 0 inner_list_id) @ (get_tar_cmds tl (idx+1) list_id)
+                @ (get_unpack_cmds exprs 0 inner_list_id) @ (get_unpack_cmds tl (idx+1) list_id)
             | _ -> raise (Error "Assignment not supported in Spy")
         ) in
-        let target_cmds = (match targets with
-            | [Spy.Name(id)] -> [(new_label(), Spvm.COPY(id, val_id))]
-            | [Spy.List(exprs_list)] | [Spy.Tuple(exprs_list)] -> (get_tar_cmds exprs_list 0 val_id)
-            | exprs_list -> (get_tar_cmds exprs_list 0 val_id)
+        let rec get_target_cmds target_list = (match target_list with
+            | [] -> []
+            | Spy.Name(id)::tl -> [(new_label(), Spvm.COPY(id, val_id))] @ (get_target_cmds tl)
+            | Spy.List(exprs_list)::tl-> (get_unpack_cmds exprs_list 0 val_id) @ (get_target_cmds tl)
+            | Spy.Tuple(exprs_list)::tl -> (get_unpack_cmds exprs_list 0 val_id) @ (get_target_cmds tl)
+            | _ -> raise (Error "Assignment not supported in Spy")
         ) in
-        (val_cmds @ target_cmds)
+        (val_cmds @ get_target_cmds targets)
     | Spy.AugAssign(e1, op, e2) ->
         let assign_stmt = Spy.Assign([e1], Spy.BinOp(e1, op, e2)) in
         translate_stmt(assign_stmt)
