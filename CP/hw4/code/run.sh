@@ -2,7 +2,7 @@
 
 ASTFILENAME=target
 
-python3.10 frontend/ast2json.py test/$1.py > /tmp/$ASTFILENAME.json
+python3.11 frontend/ast2json.py test/$1.py > /tmp/$ASTFILENAME.json
 dune build main.exe
 ./_build/default/main.exe /tmp/$ASTFILENAME.json
 #./_build/default/main.exe /tmp/$ASTFILENAME.json > _build/$1.py
