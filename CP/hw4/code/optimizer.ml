@@ -7,50 +7,62 @@ match pgm with
 | [] -> []
 | inst :: _pgm -> begin
     match inst with
+    | (_, COPY(id, id2)) -> begin
+
+    end
     | (_, COPYC(id, i)) -> begin
-        let rec replace_int t_pgm = begin
+        let rec id2int t_pgm = begin
             match t_pgm with
             | [] -> []
             | inst_::_t_pgm -> begin
                 match inst_ with
-                | (l, COPY(x, y)) when y=id -> (l, COPYC(x, i))::(replace_int _t_pgm)
-                | (l, ASSIGNV(x, bop, y, z)) when z=id -> (l, ASSIGNC(x, bop, y, i))::(replace_int _t_pgm)
-                | _ -> inst_::(replace_int _t_pgm)
+                | (l, COPY(x, y)) when y=id -> (l, COPYC(x, i))::(id2int _t_pgm)
+                | (l, ASSIGNV(x, bop, y, z)) when z=id -> (l, ASSIGNC(x, bop, y, i))::(id2int _t_pgm)
+                | _ -> inst_::(id2int _t_pgm)
             end
         end in
-        let new_pgm = (replace_int _pgm) in
+        let new_pgm = (id2int _pgm) in
         let usage = (find_id_usage new_pgm id) in
         begin
             match usage with
             | [] -> optimize_pgm new_pgm       (*no usage for new_pgm -> can remove*)
-            | _ -> inst::(optimize_pgm new_pgm)  (*have usage -> can't remove*)
+            | _ -> inst::(optimize_pgm _pgm)   (*have usage -> can't remove*)
         end
     end
     | (_, COPYS(id, s)) -> begin
-    	let rec replace_str t_pgm same_id = begin
+        let rec replace_same_str t_pgm same_id = begin
+        	match t_pgm with
+            | [] -> []
+            | inst_::_t_pgm -> begin
+                match inst_ with
+                | (_, COPYS(id2, s2)) when s2=s -> begin (*add id(which have same string with s) that only used for input, print*)
+                    match (find_id_usage _t_pgm id2) with
+                    | [(_, WRITE(_))] -> inst_::(replace_same_str _t_pgm (same_id@[id2]))
+                    | [(_, READ(_))] -> inst_::(replace_same_str _t_pgm (same_id@[id2]))
+                    | _ -> inst_::(replace_same_str _t_pgm same_id)
+                    end
+                | (l, WRITE(id2)) when (List.mem id2 same_id) -> (l, WRITE(id))::(replace_same_str _t_pgm same_id)
+                | (l, READ(id2)) when (List.mem id2 same_id) -> (l, READ(id))::(replace_same_str _t_pgm same_id)
+                | _ -> inst_::(replace_same_str _t_pgm same_id)
+            end
+        end in
+    	let rec id2str t_pgm = begin
     		match t_pgm with
             | [] -> []
             | inst_::_t_pgm -> begin
                 match inst_ with
-                | (l, COPY(x, y)) when y=id -> (l, COPYS(x, s))::(replace_str _t_pgm same_id)
-                | (l, INT_OF_STR(x, y)) when y=id -> (l, COPYC(x, (int_of_string s)))::(replace_str _t_pgm same_id)
-                | (_, COPYS(id2, s2)) when s2=s -> begin (*add id(which have same string with s) to same_id where no usage before print*)
-                    match (find_id_usage _t_pgm id2) with
-                    | (_, WRITE(_))::_ -> inst_::(replace_str _t_pgm (same_id@[id2]))
-                    | (_, READ(_))::_ -> inst_::(replace_str _t_pgm (same_id@[id2]))
-                    | _ -> inst_::(replace_str _t_pgm same_id)
-                    end
-                | (l, WRITE(id2)) when (List.mem id2 same_id) -> (l, WRITE(id))::(replace_str _t_pgm same_id)
-                | (l, READ(id2)) when (List.mem id2 same_id) -> (l, READ(id))::(replace_str _t_pgm same_id)
-                | _ -> inst_::(replace_str _t_pgm same_id)
+                | (l, COPY(x, y)) when y=id -> (l, COPYS(x, s))::(id2str _t_pgm)
+                | (l, INT_OF_STR(x, y)) when y=id -> (l, COPYC(x, (int_of_string s)))::(id2str _t_pgm)
+                | _ -> inst_::(id2str _t_pgm)
             end
     	end in
-    	let new_pgm = (replace_str _pgm []) in
-        let usage = (find_id_usage new_pgm id) in
+    	let new_pgm = (replace_same_str _pgm []) in (*only replace write/read*)
+    	let new_new_pgm = (id2str new_pgm) in
+        let usage = (find_id_usage new_new_pgm id) in
         begin
             match usage with
-            | [] -> optimize_pgm new_pgm
-            | _ -> inst::(optimize_pgm new_pgm)
+            | [] -> optimize_pgm new_new_pgm
+            | _ -> inst::(optimize_pgm new_pgm) (*reflect only replace_same_str*)
         end
     end
     | (_, COPYN(id)) -> begin
