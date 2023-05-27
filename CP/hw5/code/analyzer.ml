@@ -19,6 +19,7 @@ type cmd =
   | If of bexp * cmd * cmd
   | While of bexp * cmd
 
+
 module AbsBool = struct
   type t = Top | Bot | True | False
   let not b = match b with
@@ -27,10 +28,15 @@ module AbsBool = struct
     | True -> False
     | False -> True
   let band b1 b2 = match (b1, b2) with
-    | (False, _) | (_, False) -> False
     | (Top, _) | (_, Top) -> Top
-    | (Bot, Bot) -> Bot
+    | (Bot, c) | (c, Bot) -> c
+    | (False, _) | (_, False) -> False
     | (True, True) -> True
+  let bor b1 b2 = match (b1, b2) with
+    | (Top, _) | (_, Top) -> Top
+    | (Bot, c) | (c, Bot) -> c
+    | (True, _) | (_, True) -> True
+    | (False, False) -> False
   let to_string b = match b with
     | Top -> "Top"
     | Bot -> "Bot"
@@ -41,52 +47,53 @@ end
 module Sign = struct
   type t = Top | Bot | Neg | Zero | Pos
   let order a b = match (a, b) with
-    | (Top, _) | (_, Bot) -> true
-    | (Bot, _) | (_, Top) -> false
-    | (Neg, Zero) | (Neg, Pos) | (Zero, Pos) -> true
-    | (Pos, Zero) | (Pos, Neg) | (Zero, Neg) -> false
-    | _ -> true
+    | (Bot, _) | (_, Top) -> true
+    | (Top, _) | (_, Bot) -> false
+    | (Zero, Zero) | (Neg, Neg) | (Pos, Pos) -> true
+    | _ -> false
   let alpha n =
     if n > 0 then Pos
     else if n < 0 then Neg
     else Zero
+  let join a b = match (a, b) with
+    | (Bot, c) | (c, Bot) -> c
+    | (Pos, Pos) -> Pos
+    | (Neg, Neg) -> Neg
+    | (Zero, Zero) -> Zero
+    | _ -> Top
   let add a b = match (a, b) with
-    | (Bot, _) | (_, Bot) -> Bot
+    | (Bot, c) | (c, Bot) -> c
     | (Top, _) | (_, Top) -> Top
-    | (Neg, Pos) | (Pos, Neg) | (Zero, _) | (_, Zero) -> Zero
-    | (Neg, Zero) | (Zero, Neg) | (Pos, Zero) | (Zero, Pos) -> Top
-    | _ -> Top
+    | (Zero, c) | (c, Zero) -> c
+    | (Pos, Neg) | (Neg, Pos) -> Top
+    | (Pos, Pos) -> Pos
+    | (Neg, Neg) -> Neg
   let sub a b = match (a, b) with
-    | (Bot, _) | (_, Bot) -> Bot
+    | (Bot, c) | (c, Bot) -> c
     | (Top, _) | (_, Top) -> Top
-    | (Neg, Neg) | (Pos, Pos) | (Zero, _) | (_, Zero) -> Zero
-    | (Neg, Zero) | (Pos, Zero) | (Zero, Neg) | (Zero, Pos) -> Top
-    | _ -> Top
+    | (Zero, c) | (c, Zero) -> c
+    | (Pos, Neg) -> Pos
+    | (Neg, Pos) -> Neg
+    | (Pos, Pos) -> Top
+    | (Neg, Neg) -> Top
   let mul a b = match (a, b) with
-    | (Bot, _) | (_, Bot) -> Bot
+    | (Bot, c) | (c, Bot) -> c
     | (Top, _) | (_, Top) -> Top
-    | (Neg, Neg) | (Pos, Pos) -> Pos
-    | (Neg, Pos) | (Pos, Neg) -> Neg
     | (Zero, _) | (_, Zero) -> Zero
-    | _ -> Top
+    | (Pos, Neg) | (Neg, Pos) -> Neg
+    | (Pos, Pos) | (Neg, Neg) -> Pos
   let equal a b = match (a, b) with
-    | (Bot, _) | (_, Bot) -> Bot
-    | (Top, _) | (_, Top) -> Top
-    | (Neg, Neg) | (Pos, Pos) | (Zero, Zero) -> True
-    | (Neg, Zero) | (Zero, Neg) | (Pos, Zero) | (Zero, Pos) -> False
-    | _ -> Top
+    | (Bot, Bot) | (Zero, Zero) -> AbsBool.True
+    | (Pos, Zero) | (Pos, Neg) | (Zero, Pos) | (Zero, Neg) | (Neg, Pos) | (Neg, Zero) -> AbsBool.False
+    | _ -> AbsBool.Top
   let le a b = match (a, b) with
-    | (Bot, _) | (_, Bot) -> Bot
-    | (Top, _) | (_, Top) -> Top
-    | (Neg, Neg) | (Neg, Zero) | (Neg, Pos) | (Zero, Pos) | (Zero, Zero) | (Pos, Pos) -> True
-    | (Pos, Zero) | (Zero, Neg) -> False
-    | _ -> Top
+    | (Bot, Bot) | (Pos, Zero) | (Pos, Neg) | (Zero, Neg) -> AbsBool.True
+    | (Zero, Pos) | (Zero, Zero) | (Neg, Pos) | (Neg, Zero) -> AbsBool.False
+    | _ -> AbsBool.Top
   let ge a b = match (a, b) with
-    | (Bot, ) | (, Bot) -> Bot
-    | (Top, ) | (, Top) -> Top
-    | (Neg, Neg) | (Zero, Neg) | (Pos, Neg) | (Pos, Zero) | (Zero, Zero) | (Pos, Pos) -> True
-    | (Neg, Zero) | (Zero, Pos) -> False
-    | _ -> Top
+    | (Bot, Bot) | (Zero, Pos) | (Neg, Pos) | (Neg, Zero) -> AbsBool.True
+    | (Pos, Zero) | (Pos, Neg) | (Zero, Zero) | (Zero, Neg) -> AbsBool.False
+    | _ -> AbsBool.Top
   let to_string = function
     | Top -> "Top"
     | Bot -> "Bot"
@@ -100,13 +107,13 @@ module AbsMem = struct
   type t = Sign.t LocMap.t
   let empty = LocMap.empty
   let add = LocMap.add
-  let find x m = try LocMap.find x m with _ -> Sign.Bot
+  let find k m = try LocMap.find k m with _ -> Sign.Bot
   let join m1 m2 =
-    LocMap.fold (fun x v m' -> add x (Sign.join v (find x m')) m') m1 m2
+    LocMap.fold (fun m1_k m1_v m2_acc -> add m1_k (Sign.join m1_v (find m1_k m2_acc)) m2_acc) m1 m2
   let order m1 m2 =
-    LocMap.for_all (fun x v -> Sign.order v (find x m2)) m1
+    LocMap.for_all (fun m1_k m1_v -> Sign.order m1_v (find m1_k m2)) m1
   let print m =
-    LocMap.iter (fun x v -> print_endline (x ^ " |-> " ^ Sign.to_string v))
+    LocMap.iter (fun k v -> print_endline (k ^ " |-> " ^ Sign.to_string v)) m
 end
 
 let rec eval_aexp : aexp -> AbsMem.t -> Sign.t
@@ -145,21 +152,11 @@ let rec eval_cmd : cmd -> AbsMem.t -> AbsMem.t
     let rec iter b c m =
       match eval_bexp b m with
       | AbsBool.True | AbsBool.Top ->
-        if AbsMem.order (eval_cmd c m) m then m
+        if AbsMem.order (eval_cmd c m) m
+        then m
         else iter b c (AbsMem.join m (eval_cmd c m))
       | _ -> m
-in iter b c m
-
-let pgm = Seq [
-    Assign ("q", Const 1);
-    Assign ("r", Var "a");
-    While (Ge (Var "r", Var "b"),
-        Seq [
-          Assign ("r", Sub (Var "r", Var "b"));
-          Assign ("q", Plus (Var "q", Const 1))
-]) ]
-let mem = (AbsMem.add "b" Sign.Pos (AbsMem.add "a" Sign.Pos AbsMem.empty))
-let _ = AbsMem.print (eval_cmd pgm mem)
+    in iter b c m
 
 
 let analyze : Spy.program -> Spvm.program -> bool 
