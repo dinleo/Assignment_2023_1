@@ -21,21 +21,78 @@ type cmd =
 
 module AbsBool = struct
   type t = Top | Bot | True | False
-  let not b = ...
-  let band b1 b2 = ...
+  let not b = match b with
+    | Top -> Top
+    | Bot -> Bot
+    | True -> False
+    | False -> True
+  let band b1 b2 = match (b1, b2) with
+    | (False, _) | (_, False) -> False
+    | (Top, _) | (_, Top) -> Top
+    | (Bot, Bot) -> Bot
+    | (True, True) -> True
+  let to_string b = match b with
+    | Top -> "Top"
+    | Bot -> "Bot"
+    | True -> "True"
+    | False -> "False"
 end
 
 module Sign = struct
   type t = Top | Bot | Neg | Zero | Pos
-  let order a b = ...
-  let alpha n = ...
-  let join a b = ...
-  let add a b = ...
-  let sub a b = ...
-  let mul a b = ...
-  let equal a b = ...
-  let le a b = ...
-  let ge a b = ...
+  let order a b = match (a, b) with
+    | (Top, _) | (_, Bot) -> true
+    | (Bot, _) | (_, Top) -> false
+    | (Neg, Zero) | (Neg, Pos) | (Zero, Pos) -> true
+    | (Pos, Zero) | (Pos, Neg) | (Zero, Neg) -> false
+    | _ -> true
+  let alpha n =
+    if n > 0 then Pos
+    else if n < 0 then Neg
+    else Zero
+  let add a b = match (a, b) with
+    | (Bot, _) | (_, Bot) -> Bot
+    | (Top, _) | (_, Top) -> Top
+    | (Neg, Pos) | (Pos, Neg) | (Zero, _) | (_, Zero) -> Zero
+    | (Neg, Zero) | (Zero, Neg) | (Pos, Zero) | (Zero, Pos) -> Top
+    | _ -> Top
+  let sub a b = match (a, b) with
+    | (Bot, _) | (_, Bot) -> Bot
+    | (Top, _) | (_, Top) -> Top
+    | (Neg, Neg) | (Pos, Pos) | (Zero, _) | (_, Zero) -> Zero
+    | (Neg, Zero) | (Pos, Zero) | (Zero, Neg) | (Zero, Pos) -> Top
+    | _ -> Top
+  let mul a b = match (a, b) with
+    | (Bot, _) | (_, Bot) -> Bot
+    | (Top, _) | (_, Top) -> Top
+    | (Neg, Neg) | (Pos, Pos) -> Pos
+    | (Neg, Pos) | (Pos, Neg) -> Neg
+    | (Zero, _) | (_, Zero) -> Zero
+    | _ -> Top
+  let equal a b = match (a, b) with
+    | (Bot, _) | (_, Bot) -> Bot
+    | (Top, _) | (_, Top) -> Top
+    | (Neg, Neg) | (Pos, Pos) | (Zero, Zero) -> True
+    | (Neg, Zero) | (Zero, Neg) | (Pos, Zero) | (Zero, Pos) -> False
+    | _ -> Top
+  let le a b = match (a, b) with
+    | (Bot, _) | (_, Bot) -> Bot
+    | (Top, _) | (_, Top) -> Top
+    | (Neg, Neg) | (Neg, Zero) | (Neg, Pos) | (Zero, Pos) | (Zero, Zero) | (Pos, Pos) -> True
+    | (Pos, Zero) | (Zero, Neg) -> False
+    | _ -> Top
+  let ge a b = match (a, b) with
+    | (Bot, ) | (, Bot) -> Bot
+    | (Top, ) | (, Top) -> Top
+    | (Neg, Neg) | (Zero, Neg) | (Pos, Neg) | (Pos, Zero) | (Zero, Zero) | (Pos, Pos) -> True
+    | (Neg, Zero) | (Zero, Pos) -> False
+    | _ -> Top
+  let to_string = function
+    | Top -> "Top"
+    | Bot -> "Bot"
+    | Neg -> "Neg"
+    | Zero -> "Zero"
+    | Pos -> "Pos"
 end
 
 module AbsMem = struct
