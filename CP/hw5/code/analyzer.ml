@@ -2,8 +2,8 @@ open Spy
 exception TypeError of string
 
 module Ptype = struct
-  type t = PMix | PInt | PString | PBool | PList | PTuple | PNone
-  let join a b = match (a, b) with
+type t = PMix | PInt | PString | PBool | PList | PTuple | PNone
+let join a b = match (a, b) with
     | (PInt, PInt) -> PInt
     | (PString, PString) -> PString
     | (PBool, PBool) -> PBool
@@ -11,10 +11,10 @@ module Ptype = struct
     | (PTuple, PTuple) -> PTuple
     | (PNone, PNone) -> PNone
     | _ -> PMix
-  let oper_check a b = match (a, b) with
+let oper_check a b = match (a, b) with
     | (PInt, PInt) | (PString, PString) | (PBool, PBool) | (PList, PList) | (PTuple, PTuple) -> true
     | _ -> false
-  let to_string = function
+let to_string = function
     | PMix -> "PMix"
     | PInt -> "PInt"
     | PString -> "PString"
@@ -25,37 +25,56 @@ module Ptype = struct
 end
 
 module AbsMem = struct
-  module LocMap = Map.Make(String)
-  type t = Ptype.t LocMap.t
-  let empty = LocMap.empty
-  let add = LocMap.add
-  let find k m = try LocMap.find k m with _ -> Ptype.PNone
-  let join m1 m2 =
-    LocMap.fold (fun m1_k m1_v m2_acc -> add m1_k (Ptype.join m1_v (find m1_k m2_acc)) m2_acc) m1 m2
-  let print m =
-    LocMap.iter (fun k v -> print_endline (k ^ " |-> " ^ Ptype.to_string v)) m
+    module LocMap = Map.Make(String)
+    type t = Ptype.t LocMap.t
+    let empty = LocMap.empty
+    let add = LocMap.add
+    let find k m = try LocMap.find k m with _ -> Ptype.PNone
+    let iter_add i x v m = add (i^"@"^x) v m
+    let iter_find i x m = try LocMap.find (i^"@"^x) m with _ -> Ptype.PNone
+    let join m1 m2 =
+        LocMap.fold (fun m1_k m1_v m2_acc -> add m1_k (Ptype.join m1_v (find m1_k m2_acc)) m2_acc) m1 m2
+    let print m =
+        LocMap.iter (fun k v -> print_endline (k ^ " |-> " ^ Ptype.to_string v)) m
 end
 
+let rec analyze_prog
+= fun _ -> true
 
-let rec eval_prog : program -> AbsMem.t -> AbsMem.t
+and eval_prog : program -> AbsMem.t -> AbsMem.t
 =fun p m -> List.fold_left (fun m c -> eval_stmt c m) m p
 
 and eval_stmt : stmt -> AbsMem.t -> AbsMem.t
-=fun c m ->
-  match c with
-  | Assign (x, e) -> AbsMem.add x (eval_expr e m) m
-  | If (b, p1, p2) -> begin
-      let t_b = (eval_expr b m) in
-      match t_b with
-      | Ptype.PBool -> AbsMem.join (eval_prog p1 m) (eval_prog p2 m)
-      | _ ->  raise (TypeError ("not bool: "^(Ptype.to_string t_b)))
-    end
-  | While (b, p) -> begin
-  	  let t_b = (eval_expr b m) in
-      match t_b with
-      | Ptype.PBool -> (eval_prog p m)
-      | _ ->  raise (TypeError ("not bool: "^(Ptype.to_string t_b)))
-    end
+=fun c m -> match c with
+| Assign (target, e) ->
+    let t_e = (eval_expr e m) in
+    begin match target with
+    | Name x -> AbsMem.add x t_e m
+    | Subscript (e1, e2) -> (*todo*)
+        let t_i = eval_expr e1 in
+        let t_x = eval_expr e2 in
+        AbsMem.iter_add t_i t_x t_e m
+    | Tuple lhss
+    | List lhss ->
+        let _, code =
+        list_fold (fun lhs (n, code_a) ->
+            (n+1, code_a @ translate_assign_single lhs (Subscript (Name x_rhs, Constant (CInt n))))
+            ) lhss (0, []) in
+        code_rhs @ code
+    | _ -> raise (Error "assignment error")
+end
+| If (b, p1, p2) -> begin
+    let t_b = (eval_expr b m) in
+    match t_b with
+    | Ptype.PBool -> AbsMem.join (eval_prog p1 m) (eval_prog p2 m)
+    | _ ->  raise (TypeError ("not bool: "^(Ptype.to_string t_b)))
+end
+| While (b, p) -> begin
+    let t_b = (eval_expr b m) in
+    match t_b with
+    | Ptype.PBool -> (eval_prog p m)
+    | _ ->  raise (TypeError ("not bool: "^(Ptype.to_string t_b)))
+end
 
 and eval_expr : expr -> AbsMem.t -> Ptype.t
 =fun a m ->
@@ -70,4 +89,4 @@ and eval_expr : expr -> AbsMem.t -> Ptype.t
     else raise (TypeError ((Ptype.to_string t1)^" and "^(Ptype.to_string t2)))
 
 let analyze : Spy.program -> Spvm.program -> bool 
-=fun _ _ -> true (* TODO *)
+=fun s_prog _ -> try analyze_prog (eval_prog s_prog) with _ -> false
