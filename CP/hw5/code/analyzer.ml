@@ -232,12 +232,12 @@ and execute_prog : program -> PMem.t -> PMem.t
             | Ptype.PInt(0) -> (execute_block n_lb e_lb m)
             | Ptype.PInt(_) -> (execute_block j_lb e_lb m)
             | Ptype.PIntR(_) ->
-                let c_m = begin match (PMem.find ("$"^x) m) with
-                    | Ptype.PCond(id1, op, id2) -> (PMem.eval_cond id1 op id2 m)
-                    | _ -> m
+                let c_m, u_m = begin match (PMem.find ("$"^x) m) with
+                    | Ptype.PCond(id1, op, id2) -> (PMem.eval_cond id1 op id2 m), (PMem.eval_un_cond id1 op id2 m)
+                    | _ -> m, m
                 end in
                 let m_jump = (execute_block j_lb e_lb c_m) in
-                let m_u_jump = (execute_block n_lb e_lb m) in
+                let m_u_jump = (execute_block n_lb e_lb u_m) in
                 PMem.join m_jump m_u_jump
             | _ -> raise (TypeError "CJUMP not int typer")
             end
@@ -247,12 +247,12 @@ and execute_prog : program -> PMem.t -> PMem.t
             | Ptype.PInt(0) -> (execute_block j_lb e_lb m)
             | Ptype.PInt(_) -> (execute_block n_lb e_lb m)
             | Ptype.PIntR(_) ->
-                let u_m = begin match (PMem.find ("$"^x) m) with
-                    | Ptype.PCond(id1, op, id2) ->  (PMem.eval_un_cond id1 op id2 m)
-                    | _ -> m
+                let u_m, c_m = begin match (PMem.find ("$"^x) m) with
+                    | Ptype.PCond(id1, op, id2) ->  (PMem.eval_un_cond id1 op id2 m), (PMem.eval_cond id1 op id2 m)
+                    | _ -> m, m
                 end in
                 let m_jump = (execute_block j_lb e_lb u_m) in
-                let m_u_jump = (execute_block n_lb e_lb m) in
+                let m_u_jump = (execute_block n_lb e_lb c_m) in
                 PMem.join m_jump m_u_jump
             | _ -> raise (TypeError "CJUMPF not int type")
             end
@@ -449,6 +449,6 @@ and eval_instr : instr -> PMem.t -> PMem.t
 
 let analyze : Spy.program -> Spvm.program -> bool
 =fun _ s_prog ->
-let exe_m = (execute_prog s_prog PMem.empty) in
-let _ = PMem.print exe_m in
-try try_mem exe_m with _ -> false
+(*let exe_m = (execute_prog s_prog PMem.empty) in*)
+(*let _ = PMem.print exe_m in*)
+try try_mem (execute_prog s_prog PMem.empty) with _ -> false
