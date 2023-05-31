@@ -23,8 +23,8 @@ let rec to_string = function
     | PPtr(s) -> "PPtr("^s^")"
     | PInt(i) -> "PInt("^(string_of_int i)^")"
     | PStr(s) -> "PStr("^s^")"
-    | PList(i, t1) -> "PList(["^i^"]"^(List.fold_left (fun acc x -> acc^", "^to_string x) "" t1)^")"
-    | PTuple(i, t1) -> "PTuple(["^i^"]"^(List.fold_left (fun acc x -> acc^", "^to_string x) "" t1)^")"
+    | PList(i, t1) -> "PList(<"^i^">"^(List.fold_left (fun acc x -> acc^", "^to_string x) "" t1)^")"
+    | PTuple(i, t1) -> "PTuple(<"^i^">"^(List.fold_left (fun acc x -> acc^", "^to_string x) "" t1)^")"
     | PFunc(id_list, _) -> "PFunc("^(List.fold_left (fun acc x -> acc^", "^ x) "" id_list)^")"
     | PNone -> "PNone"
 let eval_bop = fun t1 o t2 -> begin match t1, o, t2 with
@@ -81,9 +81,20 @@ let join m1 m2 =
     LocMap.fold (fun m1_k m1_v m2_acc -> add m1_k (Ptype.join m1_v (find m1_k m2_acc)) m2_acc) m1 m2
 let print m =
     LocMap.iter (fun k v -> print_endline (k ^ " |-> " ^ Ptype.to_string v)) m
+let rec deep_copy lst m =
+    List.map (fun x ->
+        let v = begin match x with
+            | Ptype.PPtr(s) -> find s m
+            | ty -> ty
+        end in
+        begin match v with
+            | Ptype.PList(_, p_list) -> Ptype.PList("", deep_copy p_list m)
+            | Ptype.PTuple(_, p_list) -> Ptype.PTuple("", deep_copy p_list m)
+            | ty -> ty
+        end) lst
 end
 
-let rec analyze_m
+let rec try_mem
 = fun _ -> true
 
 and find_next_label lb lst =
@@ -95,18 +106,18 @@ match lst with
 and find
 = fun k m -> PMem.find k m
 
-and eval_prog : program -> PMem.t -> PMem.t
+and execute_prog : program -> PMem.t -> PMem.t
 =fun prog init_m ->
     let (init_lb, _) = List.hd prog in
-    let rec eval_linstr = fun c_lb e_lb m ->
+    let rec execute_block = fun c_lb e_lb m ->
     (* curr_label, end_label, next_label, jump_label *)
     if c_lb = e_lb then m
     else begin match (List.assoc c_lb prog) with
         | HALT -> m
         | inst' -> begin let n_lb = find_next_label c_lb prog in
         match inst' with
-        | SKIP -> eval_linstr n_lb e_lb m
-        | FUNC_DEF(f, id_list, body) -> eval_linstr (n_lb) (e_lb) (PMem.add f (Ptype.PFunc(id_list, body)) m)
+        | SKIP -> execute_block n_lb e_lb m
+        | FUNC_DEF(f, id_list, body) -> execute_block (n_lb) (e_lb) (PMem.add f (Ptype.PFunc(id_list, body)) m)
         | RETURN(x) -> (PMem.add "@" (find x m) m)
         | CALL(x, f, arg_list) -> begin match (find f m) with
             | Ptype.PFunc(id_list, body) ->
@@ -118,37 +129,37 @@ and eval_prog : program -> PMem.t -> PMem.t
                     end
                 in
                 let temp_mem1 = id_arg_match id_list arg_list m in
-                let temp_mem2 = eval_prog body temp_mem1 in
+                let temp_mem2 = execute_prog body temp_mem1 in
                 let ret_val = find "@" (temp_mem2) in
                 let ret_val2 = begin match ret_val with
-                    | Ptype.PList(_, p_list) -> Ptype.PList(x, p_list)
-                    | Ptype.PTuple(_, p_list) -> Ptype.PTuple(x, p_list)
+                    | Ptype.PList(_, p_list) -> Ptype.PList(x, PMem.deep_copy p_list temp_mem2)
+                    | Ptype.PTuple(_, p_list) -> Ptype.PTuple(x, PMem.deep_copy p_list temp_mem2)
                     | _ -> ret_val
                 end in
                 let temp_mem3 = (PMem.add x ret_val2 m) in
-                eval_linstr (n_lb) (e_lb) temp_mem3
+                execute_block (n_lb) (e_lb) temp_mem3
             | _ -> raise (No_function f)
         end
-        | UJUMP(j_lb) -> eval_linstr (j_lb) (e_lb) m
+        | UJUMP(j_lb) -> execute_block (j_lb) (e_lb) m
         | CJUMP(x, j_lb) ->
             let t_x = (find x m) in
             begin match t_x with
-            | Ptype.PInt(0) -> (eval_linstr n_lb e_lb m)
-            | Ptype.PInt(_) -> (eval_linstr j_lb e_lb m)
+            | Ptype.PInt(0) -> (execute_block n_lb e_lb m)
+            | Ptype.PInt(_) -> (execute_block j_lb e_lb m)
             | _ -> raise (TypeError "CJUMP not int typer")
             end
         | CJUMPF(x, j_lb) ->
             let t_x = (find x m) in
             begin match t_x with
-            | Ptype.PInt(0) -> (eval_linstr j_lb e_lb m)
-            | Ptype.PInt(_) -> (eval_linstr n_lb e_lb m)
+            | Ptype.PInt(0) -> (execute_block j_lb e_lb m)
+            | Ptype.PInt(_) -> (execute_block n_lb e_lb m)
             | _ -> raise (TypeError "CJUMPF not int type")
             end
         | ASSERT(_) -> m
-        | inst -> eval_linstr n_lb e_lb (eval_instr inst m)
+        | inst -> execute_block n_lb e_lb (eval_instr inst m)
         end
     end in
-    eval_linstr (init_lb) (-1) (init_m)
+    execute_block (init_lb) (-1) (init_m)
 and eval_instr : instr -> PMem.t -> PMem.t
 =fun inst m -> match inst with
 | RANGE(x, l, h) ->
@@ -163,22 +174,26 @@ and eval_instr : instr -> PMem.t -> PMem.t
     let t_x = (find x m) in
     let t_y = (find y m) in
     begin match t_x with
-        | Ptype.PList(arr_x, p_list) -> begin match t_y with
-            | Ptype.PList(arr_y, _)
-            | Ptype.PTuple(arr_y, _) -> PMem.add arr_x (Ptype.PList(arr_x, p_list@[Ptype.PPtr(arr_y)])) m
-            | _ -> PMem.add arr_x (Ptype.PList(arr_x, p_list@[t_y])) m
-        end
+        | Ptype.PList(arr_x, p_list) ->
+            let new_list = begin match t_y with
+                | Ptype.PList(arr_y, _)
+                | Ptype.PTuple(arr_y, _) -> Ptype.PList(arr_x, p_list@[Ptype.PPtr(arr_y)])
+                | _ -> Ptype.PList(arr_x, p_list@[t_y])
+            end in
+            (PMem.add arr_x new_list m)
         | _ -> raise (No_list x)
     end
 | LIST_INSERT(x, y) ->
     let t_x = (find x m) in
     let t_y = (find y m) in
     begin match t_x with
-        | Ptype.PList(arr_x, p_list) -> begin match t_y with
-            | Ptype.PList(arr_y, _)
-            | Ptype.PTuple(arr_y, _) -> PMem.add arr_x (Ptype.PList(arr_x, [Ptype.PPtr(arr_y)]@p_list)) m
-            | _ -> PMem.add arr_x (Ptype.PList(arr_x, [t_y]@p_list)) m
-            end
+        | Ptype.PList(arr_x, p_list) ->
+            let new_list = begin match t_y with
+                | Ptype.PList(arr_y, _)
+                | Ptype.PTuple(arr_y, _) -> Ptype.PList(arr_x, [Ptype.PPtr(arr_y)]@p_list)
+                | _ -> Ptype.PList(arr_x, [t_y]@p_list)
+            end in
+            (PMem.add arr_x new_list m)
         | _ -> raise (No_list x)
     end
 | LIST_REV(x) ->
@@ -192,11 +207,13 @@ and eval_instr : instr -> PMem.t -> PMem.t
     let t_x = (find x m) in
     let t_y = (find y m) in
     begin match t_x with
-        | Ptype.PTuple(arr_x, p_list) -> begin match t_y with
-            | Ptype.PList(arr_y, _)
-            | Ptype.PTuple(arr_y, _) -> PMem.add arr_x (Ptype.PTuple(arr_x, [Ptype.PPtr(arr_y)]@p_list)) m
-            | _ -> PMem.add arr_x (Ptype.PTuple(arr_x, [t_y]@p_list)) m
-            end
+        | Ptype.PTuple(arr_x, p_list) ->
+            let new_tuple = begin match t_y with
+                | Ptype.PList(arr_y, _)
+                | Ptype.PTuple(arr_y, _) -> Ptype.PTuple(arr_x, [Ptype.PPtr(arr_y)]@p_list)
+                | _ -> Ptype.PTuple(arr_x, [t_y]@p_list)
+            end in
+            (PMem.add arr_x new_tuple m)
         | _ -> raise (No_list x)
     end
 | ITER_LOAD(x, a ,i) ->
@@ -216,23 +233,18 @@ and eval_instr : instr -> PMem.t -> PMem.t
     let t_a = (find a m) in
     let t_i = (find i m) in
     let t_y = (find y m) in
-    begin match (t_a, t_i) with
-        | (Ptype.PList(arr_a, p_list), Ptype.PInt(n)) ->
+    let new_list = begin match (t_a, t_i) with
+        | (Ptype.PList(_, p_list), Ptype.PInt(n))
+        | (Ptype.PTuple(_, p_list), Ptype.PInt(n)) ->
             let len_list = (List.length p_list) in
             if n < len_list
-            then begin
-                let n_list = (Ptype.iter_store n t_y p_list) in
-                PMem.add (arr_a) (Ptype.PList(arr_a, n_list)) m
-            end
+            then Ptype.iter_store n t_y p_list
             else raise (Index_out_of_range a)
-        | (Ptype.PTuple(arr_a, p_list), Ptype.PInt(n)) ->
-            let len_list = (List.length p_list) in
-            if n < len_list
-            then begin
-            	let n_list = (Ptype.iter_store n t_y p_list) in
-            	PMem.add (arr_a) (Ptype.PTuple(arr_a, n_list)) m
-            end
-            else raise (Index_out_of_range a)
+        | _ -> raise (No_list a)
+    end in
+    begin match t_a with
+        | Ptype.PList(arr_a, _) -> PMem.add (arr_a) (Ptype.PList(arr_a, new_list)) m
+        | Ptype.PTuple(arr_a, _)-> PMem.add (arr_a) (Ptype.PTuple(arr_a, new_list)) m
         | _ -> raise (No_list a)
     end
 | ITER_LENGTH(x, y) ->
@@ -288,5 +300,6 @@ and eval_instr : instr -> PMem.t -> PMem.t
 
 let analyze : Spy.program -> Spvm.program -> bool
 =fun _ s_prog ->
-let _ = PMem.print (eval_prog s_prog PMem.empty) in
-try analyze_m (eval_prog s_prog PMem.empty) with _ -> true
+let exe_m = (execute_prog s_prog PMem.empty) in
+let _ = PMem.print exe_m in
+try try_mem exe_m with _ -> true
