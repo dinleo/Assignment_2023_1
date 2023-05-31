@@ -9,27 +9,59 @@ exception Index_out_of_range of string
 
 module Ptype = struct
 type t =
+    | PIntR of string
+    | PStrR of string
     | PInt of int
     | PStr of string
     | PPtr of string
     | PList of string * (t list) (* original id assigned when generate from empty *)
     | PTuple of string * (t list)
     | PFunc of (id list) * program
+    | PCond of (id * bop * id)
     | PNone
     | PMix
-let join a b = if a = b then a else PMix
+let join = fun a' b' -> begin match a', b' with
+    | a, b when a=b -> a
+    | PInt(a), PInt(b) when a!=b -> PIntR("")
+    | PInt(_), PIntR(_) -> PIntR("")
+    | PIntR(""), PInt(_) -> PIntR("")
+    | PStr(a), PStr(b) when a!=b -> PStrR("")
+    | PStr(_), PStrR(_) -> PStrR("")
+    | PStrR(_), PStr(_) -> PStrR("")
+    | _ -> PMix
+    end
 let rec to_string = function
     | PMix -> "PMix"
+    | PIntR(s) -> "PInt Random from "^s
+    | PStrR(s) -> "Pstr Random from "^s
     | PPtr(s) -> "PPtr("^s^")"
     | PInt(i) -> "PInt("^(string_of_int i)^")"
     | PStr(s) -> "PStr("^s^")"
     | PList(i, t1) -> "PList(<"^i^">"^(List.fold_left (fun acc x -> acc^", "^to_string x) "" t1)^")"
     | PTuple(i, t1) -> "PTuple(<"^i^">"^(List.fold_left (fun acc x -> acc^", "^to_string x) "" t1)^")"
     | PFunc(id_list, _) -> "PFunc("^(List.fold_left (fun acc x -> acc^", "^ x) "" id_list)^")"
+    | PCond(i1, o, i2) -> "PCond("^i1^" "^(Spvm.string_of_bop o)^" "^i2^")"
     | PNone -> "PNone"
 let eval_bop = fun t1 o t2 -> begin match t1, o, t2 with
     | PList(_, l1), ADD, PList(_, l2) -> PList("", l1@l2)
     | PTuple(_, l1), ADD, PTuple(_, l2) -> PTuple("", l1@l2)
+    | PIntR(_), MUL, PInt 0 -> PInt (0)
+    | PInt 0, MUL, PIntR(_) -> PInt (0)
+    | PInt n1, AND, PIntR(_) when n1 = 0 -> PInt 0
+    | PIntR(_), AND, PInt n1 when n1 = 0 -> PInt 0
+    | PInt n1, OR, PIntR(_) when n1 != 0 -> PInt 1
+    | PIntR(_), OR, PInt n1 when n1 != 0 -> PInt 1
+    | PIntR(_), _, PInt _ -> PIntR("")
+    | PInt _, _, PIntR(_) -> PIntR("")
+    | PIntR(_), _, PIntR(_) -> PIntR("")
+    | PStrR(_) , ADD, PStr _ -> PStrR("")
+    | PStr _, ADD, PStrR(_) -> PStrR("")
+    | PIntR(_) , MUL, PStr _ -> PStrR("")
+    | PStr _, MUL, PIntR(_) -> PStrR("")
+    | PInt _ , MUL, PStrR(_) -> PStrR("")
+    | PStrR(_), MUL, PInt _ -> PStrR("")
+    | PStrR(_), MUL, PIntR(_) -> PStrR("")
+    | PIntR(_), MUL, PStrR(_) -> PStrR("")
     | PInt n1, ADD, PInt n2 -> PInt (n1+n2)
     | PInt n1, SUB, PInt n2 -> PInt (n1-n2)
     | PInt n1, MUL, PInt n2 -> PInt (n1*n2)
@@ -53,12 +85,13 @@ let eval_bop = fun t1 o t2 -> begin match t1, o, t2 with
         let rec repeat s n =
         if n <= 0 then "" else s ^ repeat s (n-1) in
         PStr (repeat s n)
-    | _ -> raise (TypeError "b_operation type not matched")
+    | _ -> raise (TypeError ("b_operation type not matched: "^(to_string t1)^(Spvm.string_of_bop o)^(to_string t2)))
     end
 let eval_uop = fun o v -> match o, v with
     | UPLUS, PInt n -> PInt (n)
     | UMINUS, PInt n -> PInt (-n)
     | NOT, PInt n -> if n = 0 then PInt 1 else PInt 0
+    | _, PIntR(_) -> PIntR("")
     | _ -> raise (TypeError "u_operation type not matched")
 let iter_store n v lst =
     List.mapi (fun i x -> if i = n then v else x) lst
@@ -92,6 +125,58 @@ let rec deep_copy lst m =
             | Ptype.PTuple(_, p_list) -> Ptype.PTuple("", deep_copy p_list m)
             | ty -> ty
         end) lst
+let eval_cond id1 op id2 m =
+    let t_id1 = find id1 m in
+    let t_id2 = find id2 m in
+    begin match (t_id1, t_id2) with
+        | (Ptype.PInt(i), Ptype.PIntR(_)) ->
+        begin match op with
+            | LT -> (add id2 (Ptype.PInt(i+1)) m)
+            | LE -> (add id2 (Ptype.PInt(i)) m)
+            | GT -> (add id2 (Ptype.PInt(i-1)) m)
+            | GE -> (add id2 (Ptype.PInt(i)) m)
+            | EQ -> (add id2 (Ptype.PInt(i)) m)
+            | NEQ when i!=0 -> (add id2 (Ptype.PInt(0)) m)
+            | _ -> m
+        end
+        | (Ptype.PIntR(_), Ptype.PInt(i)) ->
+        begin match op with
+            | LT -> (add id1 (Ptype.PInt(i-1)) m)
+            | LE -> (add id1 (Ptype.PInt(i)) m)
+            | GT -> (add id1 (Ptype.PInt(i+1)) m)
+            | GE -> (add id1 (Ptype.PInt(i)) m)
+            | EQ -> (add id1 (Ptype.PInt(i)) m)
+            | NEQ when i!=0 -> (add id1 (Ptype.PInt(0)) m)
+            | _ -> m
+        end
+        | _ -> m
+    end
+let eval_un_cond id1 op id2 m =
+    let t_id1 = find id1 m in
+    let t_id2 = find id2 m in
+    begin match (t_id1, t_id2) with
+        | (Ptype.PInt(i), Ptype.PIntR(_)) ->
+        begin match op with
+            | LT -> (add id2 (Ptype.PInt(i)) m)
+            | LE -> (add id2 (Ptype.PInt(i-1)) m)
+            | GT -> (add id2 (Ptype.PInt(i)) m)
+            | GE -> (add id2 (Ptype.PInt(i+1)) m)
+            | EQ when i!=0 -> (add id2 (Ptype.PInt(0)) m)
+            | NEQ when i!=0 -> (add id2 (Ptype.PInt(i)) m)
+            | _ -> m
+        end
+        | (Ptype.PIntR(_), Ptype.PInt(i)) ->
+        begin match op with
+            | LT -> (add id2 (Ptype.PInt(i)) m)
+            | LE -> (add id2 (Ptype.PInt(i+1)) m)
+            | GT -> (add id2 (Ptype.PInt(i)) m)
+            | GE -> (add id2 (Ptype.PInt(i-1)) m)
+            | EQ when i!=0 -> (add id2 (Ptype.PInt(0)) m)
+            | NEQ when i!=0 -> (add id2 (Ptype.PInt(i)) m)
+            | _ -> m
+        end
+        | _ -> m
+    end
 end
 
 let rec try_mem
@@ -146,6 +231,14 @@ and execute_prog : program -> PMem.t -> PMem.t
             begin match t_x with
             | Ptype.PInt(0) -> (execute_block n_lb e_lb m)
             | Ptype.PInt(_) -> (execute_block j_lb e_lb m)
+            | Ptype.PIntR(_) ->
+                let c_m = begin match (PMem.find ("$"^x) m) with
+                    | Ptype.PCond(id1, op, id2) -> (PMem.eval_cond id1 op id2 m)
+                    | _ -> m
+                end in
+                let m_jump = (execute_block j_lb e_lb c_m) in
+                let m_u_jump = (execute_block n_lb e_lb m) in
+                PMem.join m_jump m_u_jump
             | _ -> raise (TypeError "CJUMP not int typer")
             end
         | CJUMPF(x, j_lb) ->
@@ -153,6 +246,14 @@ and execute_prog : program -> PMem.t -> PMem.t
             begin match t_x with
             | Ptype.PInt(0) -> (execute_block j_lb e_lb m)
             | Ptype.PInt(_) -> (execute_block n_lb e_lb m)
+            | Ptype.PIntR(_) ->
+                let u_m = begin match (PMem.find ("$"^x) m) with
+                    | Ptype.PCond(id1, op, id2) ->  (PMem.eval_un_cond id1 op id2 m)
+                    | _ -> m
+                end in
+                let m_jump = (execute_block j_lb e_lb u_m) in
+                let m_u_jump = (execute_block n_lb e_lb m) in
+                PMem.join m_jump m_u_jump
             | _ -> raise (TypeError "CJUMPF not int type")
             end
         | ASSERT(_) -> m
@@ -290,10 +391,21 @@ and eval_instr : instr -> PMem.t -> PMem.t
     let t_y = (find y m) in
     let t_z = (find z m) in
     let v = (Ptype.eval_bop (t_y) o (t_z)) in
+    let c_m = begin match o with
+        | EQ | LT | LE | GT | GE | NEQ ->
+            let id_y, id_z = begin match (t_y, t_z) with
+            | (Ptype.PIntR(o_y), Ptype.PIntR(o_z)) -> o_y, o_z
+            | (Ptype.PIntR(o_y), _) -> o_y, z
+            | (_, Ptype.PIntR(o_z)) -> y, o_z
+            | _ -> y, z
+            end in
+            (PMem.add ("$"^x) (Ptype.PCond(id_y, o, id_z)) m)
+        | _ -> m
+    end in
     begin match v with
-        | Ptype.PList(_, p_list) -> (PMem.add x (Ptype.PList(x, p_list)) m)
-        | Ptype.PTuple(_, p_list) -> (PMem.add x (Ptype.PTuple(x, p_list)) m)
-        | _ -> (PMem.add x v m)
+        | Ptype.PList(_, p_list) -> (PMem.add x (Ptype.PList(x, p_list)) c_m)
+        | Ptype.PTuple(_, p_list) -> (PMem.add x (Ptype.PTuple(x, p_list)) c_m)
+        | _ -> (PMem.add x v c_m)
     end
 | ASSIGNC(x, o, y, n) ->
     let t_y = (find y m) in
@@ -306,24 +418,29 @@ and eval_instr : instr -> PMem.t -> PMem.t
     begin match t_y with
         | Ptype.PList(arr_a, _)
         | Ptype.PTuple(arr_a, _) -> PMem.add x (Ptype.PPtr(arr_a)) m
+        | Ptype.PIntR(_) -> PMem.add x (Ptype.PIntR(y)) m
+        | Ptype.PStrR(_) -> PMem.add x (Ptype.PStrR(y)) m
         | _ -> PMem.add x t_y m
     end
 | COPYC(x, n) -> PMem.add x (Ptype.PInt(n)) m
 | COPYS(x, s) -> PMem.add x (Ptype.PStr(s)) m
 | COPYN(x) -> PMem.add x (Ptype.PNone) m
-| READ(x) -> PMem.add x (Ptype.PStr("0")) m
+| READ(x) -> PMem.add x (Ptype.PStrR("")) m
 | WRITE(_) -> m
 | INT_OF_STR(x, y) ->
     let t_y = (find y m) in
     begin match t_y with
         | Ptype.PStr(s) -> PMem.add x (Ptype.PInt(int_of_string s)) m
+        | Ptype.PStrR(_) -> PMem.add x (Ptype.PIntR("")) m
         | _ -> raise (TypeError "int() Operation not str type")
     end
 | IS_INSTANCE(x, y, typ) ->
     let t_y = (find y m) in
     begin match (t_y, typ) with
         | (Ptype.PInt(_), "int")
+        | (Ptype.PIntR(_), "int")
         | (Ptype.PStr(_), "str")
+        | (Ptype.PStrR(_), "str")
         | (Ptype.PList(_, _), "list")
         | (Ptype.PTuple(_, _), "tuple") -> PMem.add x (Ptype.PInt(1)) m
         | _ -> PMem.add x (Ptype.PInt(0)) m
@@ -333,5 +450,5 @@ and eval_instr : instr -> PMem.t -> PMem.t
 let analyze : Spy.program -> Spvm.program -> bool
 =fun _ s_prog ->
 let exe_m = (execute_prog s_prog PMem.empty) in
-(*let _ = PMem.print exe_m in*)
+let _ = PMem.print exe_m in
 try try_mem exe_m with _ -> false
