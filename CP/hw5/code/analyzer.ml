@@ -219,32 +219,64 @@ and eval_instr : instr -> PMem.t -> PMem.t
 | ITER_LOAD(x, a ,i) ->
     let t_a = (find a m) in
     let t_i = (find i m) in
-    begin match (t_a, t_i) with
-        | (Ptype.PList(_, p_list), Ptype.PInt(n))
-        | (Ptype.PTuple(_, p_list), Ptype.PInt(n)) ->
+    let nth, n, a_k, a_list = begin match (t_a, t_i) with
+        | (Ptype.PList(a_key, p_list), Ptype.PInt(n_i))
+        | (Ptype.PTuple(a_key, p_list), Ptype.PInt(n_i)) ->
             let len_list = (List.length p_list) in
-            let nth = (List.nth p_list n) in
-            if n < len_list
-            then PMem.add x nth m
+            if n_i < len_list
+            then (List.nth p_list n_i), n_i, a_key, p_list
             else raise (Index_out_of_range a)
         | _ -> raise (No_list a)
+    end in
+    begin match nth with (* if nth is raw List or tuple, replace it to pointer *)
+        | Ptype.PList(k, n_list)
+        | Ptype.PTuple(k, n_list) ->
+            let new_k = begin match k with
+                | "" -> (a_k)^"@"^(string_of_int n)
+                | _ -> k
+            end in
+            let m2 = begin match nth with
+                | Ptype.PList(_) -> PMem.add new_k (Ptype.PList(new_k, n_list)) m
+                | Ptype.PTuple(_) -> PMem.add new_k (Ptype.PTuple(new_k, n_list)) m
+                | _ -> m
+            end in
+            let a_list2 = (Ptype.iter_store n (Ptype.PPtr(new_k)) a_list) in
+            let m3 = begin match t_a with
+                | Ptype.PList(_) -> PMem.add a_k (Ptype.PList(a_k, a_list2)) m2
+                | Ptype.PTuple(_) -> PMem.add a_k (Ptype.PTuple(a_k, a_list2)) m2
+                | _ -> m2
+            end in
+            (PMem.add x (Ptype.PPtr(new_k)) m3)
+        | _ -> PMem.add x nth m
     end
 | ITER_STORE(a, i, y) ->
     let t_a = (find a m) in
     let t_i = (find i m) in
     let t_y = (find y m) in
-    let new_list = begin match (t_a, t_i) with
-        | (Ptype.PList(_, p_list), Ptype.PInt(n))
-        | (Ptype.PTuple(_, p_list), Ptype.PInt(n)) ->
+    let new_list, new_m = begin match (t_a, t_i) with
+        | (Ptype.PList(a_key, p_list), Ptype.PInt(n))
+        | (Ptype.PTuple(a_key, p_list), Ptype.PInt(n)) ->
             let len_list = (List.length p_list) in
             if n < len_list
-            then Ptype.iter_store n t_y p_list
+            then
+                let new_k = (a_key)^"@"^(string_of_int n) in
+                let p_list2 = begin match t_y with
+                    | Ptype.PList(_)
+                    | Ptype.PTuple(_) -> (Ptype.iter_store n (Ptype.PPtr(new_k)) p_list)
+                    | _ -> (Ptype.iter_store n t_y p_list)
+                end in
+                let m2 = begin match t_y with
+                    | Ptype.PList("", y_list) -> PMem.add new_k (Ptype.PList(new_k, y_list)) m
+                    | Ptype.PTuple("", y_list) -> PMem.add new_k (Ptype.PTuple(new_k, y_list)) m
+                    | _ -> m
+                end in
+                (p_list2 , m2)
             else raise (Index_out_of_range a)
         | _ -> raise (No_list a)
     end in
     begin match t_a with
-        | Ptype.PList(arr_a, _) -> PMem.add (arr_a) (Ptype.PList(arr_a, new_list)) m
-        | Ptype.PTuple(arr_a, _)-> PMem.add (arr_a) (Ptype.PTuple(arr_a, new_list)) m
+        | Ptype.PList(arr_a, _) -> PMem.add (arr_a) (Ptype.PList(arr_a, new_list)) new_m
+        | Ptype.PTuple(arr_a, _)-> PMem.add (arr_a) (Ptype.PTuple(arr_a, new_list)) new_m
         | _ -> raise (No_list a)
     end
 | ITER_LENGTH(x, y) ->
@@ -301,5 +333,5 @@ and eval_instr : instr -> PMem.t -> PMem.t
 let analyze : Spy.program -> Spvm.program -> bool
 =fun _ s_prog ->
 let exe_m = (execute_prog s_prog PMem.empty) in
-let _ = PMem.print exe_m in
+(*let _ = PMem.print exe_m in*)
 try try_mem exe_m with _ -> true
