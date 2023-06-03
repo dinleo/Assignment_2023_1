@@ -3,4 +3,4 @@
 - Computer Networks (CN)
 - Compilers (CP)
 - Natural Language Processing (NP)
-- Operation Systems (OS)
+- Operating Systems (OS)
