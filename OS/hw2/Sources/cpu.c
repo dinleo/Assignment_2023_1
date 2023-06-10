@@ -68,6 +68,10 @@ int main(int argc, char *argv[]) {
         printf("Usage: ./cpu <ProcessNumber> <Time to Execute>\n");
         return 1;
     }
+
+    int processNumber = atoi(argv[1]);
+    int timeToExecute = atoi(argv[2]);
+    pid_t pid_arr[processNumber];
     s_pid = getpid();
 
     struct sched_attr attr;
@@ -76,18 +80,12 @@ int main(int argc, char *argv[]) {
     attr.sched_priority = 10;
     attr.sched_policy = SCHED_RR;
 
-    int processNumber = atoi(argv[1]);
-    int timeToExecute = atoi(argv[2]);
-    pid_t pid_arr[processNumber];
-
-    // Register signal handler for SIGINT
     signal(SIGINT, handle_signal);
 
-    // Create child processes
     for (int i = 0; i < processNumber; i++) {
         int sch = sched_setattr(getpid(), &attr, 0);
         if (sch == -1) {
-            perror("Error: calling sched_setattr.\n");
+            perror("Error: sched_setattr fail\n");
         }
         printf("Creating Process: #%d\n", i);
         pid_arr[i] = fork();
@@ -101,16 +99,14 @@ int main(int argc, char *argv[]) {
                 calc();
                 clock_gettime(CLOCK_MONOTONIC, &end);
 
-                // Calculate elapsed time
                 currentTime = (end.tv_sec - start.tv_sec) * 1000 + (end.tv_nsec - start.tv_nsec) / 1000000;
 
-                // Print pid and count at each TIME_SLICE
                 if (currentTime % TIME_SLICE == 0) {
                     printf("Process number: %02d, Total count: %d, time: %d ms\n", i, count, TIME_SLICE);
                 }
                 if (timeToExecute * 1000 <= currentTime){
                     printf("DONE!! PROCESS #%02d count = %02d %02ld \n", i, count, currentTime);
-                    exit(100+i);
+                    exit(1);
                 }
             }
         }
