@@ -155,16 +155,19 @@ int main(int argc, char *argv[])
                 bytesRead = read(sd, buffer, BUF_SIZE);
                 if (bytesRead < 0)
                     // perror("Reading error");
+                    continue;
 
                 // Find filename
-                char *startPtr = strstr(buffer, "GET /");
+                char *startPtr; // Declaration added here
+                startPtr = strstr(buffer, "GET /");
                 if (startPtr == NULL) {
                     // Invalid request format
                     continue;
                 }
 
                 startPtr += 5;  // Move pointer to the beginning of the filename
-                char *endPtr = strchr(startPtr, ' ');
+                char *endPtr;
+                endPtr = strchr(startPtr, ' ');
                 if (endPtr == NULL) {
                     // Invalid request format
                     continue;
@@ -179,6 +182,7 @@ int main(int argc, char *argv[])
                 char filename[FILE_NAME];
                 memcpy(filename, startPtr, filenameLength);
                 filename[filenameLength] = '\0';
+
 
                 // File path
                 char path[BUF_SIZE];
@@ -196,10 +200,8 @@ int main(int argc, char *argv[])
 
                 strcpy(path_index, path_root);
                 strcat(path_index, "index.html");
-                char fileBuffer[BUF_SIZE];
 
                 int fd;
-                int index_fd;
 
                 // home
                 if (strcmp(filename, "") == 0) {
