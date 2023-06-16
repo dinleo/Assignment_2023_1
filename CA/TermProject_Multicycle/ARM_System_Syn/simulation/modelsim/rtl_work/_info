@@ -1,0 +1,520 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\dinle\Code\Assignment\Assignmnet_2023_1\CA\TermProject_Multicycle\ARM_System_Syn\simulation\modelsim
+vAddr_Decoder
+InmRMDFfmE^zJV8YMhk;3?3
+VYZUiY@2bCD3RmSiD^JG2z0
+Z1 dC:\Users\dinle\Code\Assignment\Assignmnet_2023_1\CA\TermProject_Multicycle\ARM_System_Syn\simulation\modelsim
+Z2 w1685453781
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder/Addr_Decoder.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder/Addr_Decoder.v
+L0 3
+Z3 OV;L;10.1d;51
+r1
+31
+Z4 o-vlog01compat -work work -O0
+n@addr_@decoder
+!i10b 1
+!s100 fgDU;2MFhliiP``:iTSe>3
+!s85 0
+!s108 1686920795.556000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder/Addr_Decoder.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder/Addr_Decoder.v|
+!s101 -O0
+!s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder -O0
+vALTPLL_clkgen
+I1WV_68>F;anhC<a<ckTO<1
+V8NhIEDFLJH>:^<HbPXabK1
+R1
+Z5 w1685453780
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v
+L0 39
+R3
+r1
+31
+R4
+n@a@l@t@p@l@l_clkgen
+!i10b 1
+!s100 JY3;V_S_4iZ58Z4<L:SOd2
+!s85 0
+!s108 1686920795.657000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v|
+!s101 -O0
+!s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL -O0
+vALTPLL_clkgen_altpll
+!i10b 1
+!s100 AVVmLhEKC?V1kIXDJXR:_2
+I_JWVMQIP:509SCUd90dOI1
+VnFgFc;Sch94`>JTK3TO8K3
+R1
+w1686914309
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db/altpll_clkgen_altpll.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db/altpll_clkgen_altpll.v
+L0 29
+R3
+r1
+!s85 0
+31
+!s108 1686920795.900000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db/altpll_clkgen_altpll.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db/altpll_clkgen_altpll.v|
+!s101 -O0
+R4
+!s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db -O0
+n@a@l@t@p@l@l_clkgen_altpll
+vALU32bit
+I7d3eFC=;N2EZcOE0WV<>93
+VSl6]IJnd@17DGb_P6CXe62
+R1
+R5
+Z6 8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/alu.v
+Z7 FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/alu.v
+L0 40
+R3
+r1
+31
+Z8 !s108 1686920794.668000
+Z9 !s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/alu.v|
+Z10 !s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/alu.v|
+R4
+Z11 !s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM -O0
+n@a@l@u32bit
+!i10b 1
+!s100 N0Tbz?3o5TXU6hgf?9J][2
+!s85 0
+!s101 -O0
+vALUopdecoder
+Io96G0^]3j^WC5XI6EzLd<3
+VKLJ?VHNU:KblhMLbJOd9R3
+R1
+R5
+R6
+R7
+L0 13
+R3
+r1
+31
+R8
+R9
+R10
+R4
+R11
+n@a@l@uopdecoder
+!i10b 1
+!s100 OOT00fggBGRUi7RcGeH4^3
+!s85 0
+!s101 -O0
+vArithUnit
+IU6nHYmPOGO0eO_6bFHnl71
+V0<D3@G>EgA>EKa8@GXZ<Y0
+R1
+R5
+R6
+R7
+L0 1
+R3
+r1
+31
+R8
+R9
+R10
+R4
+R11
+n@arith@unit
+!i10b 1
+!s100 z_jEo1ZSiA5O@`MHj>;e?2
+!s85 0
+!s101 -O0
+vARM_System
+I;=eDJo3zITQkHBJ;D5o8k0
+V5l_lT=eOP9Y_[GP01LAN63
+R1
+R5
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM_System.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM_System.v
+L0 22
+R3
+r1
+31
+R4
+n@a@r@m_@system
+!i10b 1
+!s100 Rfc1O:nbFC_1?2igA_=hN2
+!s85 0
+!s108 1686920794.804000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM_System.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM_System.v|
+!s101 -O0
+!s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System -O0
+varmreduced
+IA[l0h6g87^;PaF_BR4C3;3
+VEkSBbUOXT7Y]HQQEd^bhI1
+R1
+Z12 w1686917624
+Z13 8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v
+Z14 FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v
+L0 121
+R3
+r1
+31
+Z15 !s108 1686920794.525000
+Z16 !s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v|
+Z17 !s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v|
+R4
+R11
+!i10b 1
+!s100 W@o@Ghb[BX4?MCVeFS>W]2
+!s85 0
+!s101 -O0
+vClkUnit
+IQVH<DGIY<AB4CFHQf3LTU3
+VR3NA[LaCmETQ^<oZb>kK71
+R1
+R2
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/clkUnit.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/clkUnit.v
+L0 48
+R3
+r1
+31
+R4
+Z18 !s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART -O0
+n@clk@unit
+!i10b 1
+!s100 lnUXdGFJ=O1_EBj:TAT@g1
+!s85 0
+!s108 1686920795.013000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/clkUnit.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/clkUnit.v|
+!s101 -O0
+vdecoder_4to16
+IOY[o4NehD6N?jFZ5V=cFD0
+VFgn[nbKT@l95`fLUH[Vf;2
+R1
+R12
+R13
+R14
+L0 55
+R3
+r1
+31
+R15
+R16
+R17
+R4
+R11
+!i10b 1
+!s100 X@oEE=NcM6[K4]6Ah:UiZ3
+!s85 0
+!s101 -O0
+vGPIO
+Ioz]Ien>^=G3oB:c;i=[hC0
+VhkkLY?6_]k6SohMJbS9jS0
+R1
+R2
+Z19 8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO/GPIO.v
+Z20 FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO/GPIO.v
+L0 22
+R3
+r1
+31
+Z21 !s108 1686920795.437000
+Z22 !s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO/GPIO.v|
+Z23 !s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO/GPIO.v|
+R4
+Z24 !s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO -O0
+n@g@p@i@o
+!i10b 1
+!s100 1P6YkGLI8fj;AS8bXSmlV3
+!s85 0
+!s101 -O0
+vkey_detect
+IQ^Tz2]`<@kSMBiFPA51k^1
+VdJ_d2o?63j;RPQ=DMV36m3
+R1
+R2
+R19
+R20
+L0 258
+R3
+r1
+31
+R21
+R22
+R23
+R4
+R24
+!i10b 1
+!s100 VLc^bf`>gVSFH^RShbhmS2
+!s85 0
+!s101 -O0
+vLogicUnit
+IY8fzS0ga;7UAHM@O4IAfF2
+VmMNLnRG__@dBel2?>;>;M3
+R1
+R5
+R6
+R7
+L0 32
+R3
+r1
+31
+R8
+R9
+R10
+R4
+R11
+n@logic@unit
+!i10b 1
+!s100 8Y`7=V`o<e9IB35zBO]W=3
+!s85 0
+!s101 -O0
+vminiUART
+IVUXNomOa]`5cHF`FIG::13
+Vh3iRn81[ZeDS][D:RDinn3
+R1
+R2
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/miniUART.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/miniUART.v
+L0 51
+R3
+r1
+31
+R4
+R18
+nmini@u@a@r@t
+!i10b 1
+!s100 6Flh`[QMF>:zAeBgdBQBf1
+!s85 0
+!s108 1686920795.117000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/miniUART.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/miniUART.v|
+!s101 -O0
+voneStep
+IfLS;=`X<dNmVi`]cM>d5C2
+VHZ_?EQ]KNP=6@RSBDMEh^0
+R1
+Z25 w1686917612
+Z26 8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v
+Z27 FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v
+L0 78
+R3
+r1
+31
+Z28 !s108 1686920794.409000
+Z29 !s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v|
+Z30 !s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v|
+R4
+R11
+none@step
+!i10b 1
+!s100 AHf;f]4M=z]HGloHJBU7j3
+!s85 0
+!s101 -O0
+vram2port_inst_data
+If=BdN;i@IP_YB<TBP=90>3
+V@nS`@J9bDPP4cX22C`O`Z2
+R1
+R5
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v
+L0 39
+R3
+r1
+31
+R4
+!i10b 1
+!s100 jn_3Mm2SzCBJj8hVTNkYg2
+!s85 0
+!s108 1686920795.774000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v|
+!s101 -O0
+!s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port -O0
+vregister
+IoV8];:Lac4f7@R_=K]6Dh3
+VM_TV2km404i70cKE850`10
+R1
+R12
+R13
+R14
+L0 42
+R3
+r1
+31
+R15
+R16
+R17
+R4
+R11
+!i10b 1
+!s100 Gd@;F72APNV1k=5T4ZY_>0
+!s85 0
+!s101 -O0
+vregister_1bit
+IZ`>N:G]fQ6@0_278W`NUg3
+VBeDDYgReELj6izje2ggM[1
+R1
+R12
+R13
+R14
+L0 26
+R3
+r1
+31
+R15
+R16
+R17
+R4
+R11
+!i10b 1
+!s100 afWLHMOP>mCX49dK>@EET2
+!s85 0
+!s101 -O0
+vregisterfile
+I=Y@MEL?biJ?bIQfLK4fAA3
+VEdA7dDd6;=^]RVYiP0E9g2
+R1
+R12
+R13
+R14
+L0 79
+R3
+r1
+31
+R15
+R16
+R17
+R4
+R11
+!i10b 1
+!s100 coWjHPP2f8Dj2gaJGG^jG3
+!s85 0
+!s101 -O0
+vRxUnit
+I7T;[[1JCPHIjZ4VT<@KJn3
+VCEzg_3Y?@1Wzj;bUDVnID2
+R1
+R2
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/RxUnit.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/RxUnit.v
+L0 50
+R3
+r1
+31
+R4
+R18
+n@rx@unit
+!i10b 1
+!s100 oV7le@K<dj=EDNP020DRM3
+!s85 0
+!s108 1686920795.223000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/RxUnit.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/RxUnit.v|
+!s101 -O0
+vsignalcontrol
+IY33INk=Z]:c>BTWN9bgOE2
+VIz]FKDCO[[JT>951>^oJ[1
+R1
+R25
+R26
+R27
+L0 1
+R3
+r1
+31
+R28
+R29
+R30
+R4
+R11
+!i10b 1
+!s100 @:HhhWl9ZS@ZhLS7kAGnA3
+!s85 0
+!s101 -O0
+vsignalunit
+I>]UQM;Q<[ShW7b3CjR`0M2
+VKf];Y5kAdeISE<`z?agdi1
+R1
+R25
+R26
+R27
+L0 109
+R3
+r1
+31
+R28
+R29
+R30
+R4
+R11
+!i10b 1
+!s100 C4[EIHi?9FNN2db8doPfE0
+!s85 0
+!s101 -O0
+vsignextmux
+IAeHm<=dK5;KLPzK]jdMno0
+Vhe:RHdGA?VLR?f:M[kKi30
+R1
+R12
+R13
+R14
+L0 1
+R3
+r1
+31
+R15
+R16
+R17
+R4
+R11
+!i10b 1
+!s100 M9:]=4kTW`eK49f^1RgL?0
+!s85 0
+!s101 -O0
+vTimerCounter
+I_?3cMi1Yg?3i>c5eBKijP2
+V?6SiADLzC[nVUWOhUg7E;3
+R1
+R2
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer/TimerCounter.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer/TimerCounter.v
+L0 3
+R3
+r1
+31
+R4
+n@timer@counter
+!i10b 1
+!s100 o:<^74c6P5^RUmBi^C8B^1
+!s85 0
+!s108 1686920795.329000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer/TimerCounter.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer/TimerCounter.v|
+!s101 -O0
+!s92 -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer -O0
+vTxUnit
+I1ch65FNMjmUFIe9]zDMKF3
+VEHTE=WB`39JHRKkWFmzA;1
+R1
+R2
+8C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/TxUnit.v
+FC:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/TxUnit.v
+L0 48
+R3
+r1
+31
+R4
+n@tx@unit
+R18
+!i10b 1
+!s100 kOg^<`<8Gi^K>Q9DbXJP:1
+!s85 0
+!s108 1686920794.907000
+!s107 C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/TxUnit.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART|C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/TxUnit.v|
+!s101 -O0

@@ -1,0 +1,294 @@
+# Reading C:/altera/13.1/modelsim_ase/tcl/vsim/pref.tcl 
+# do ARM_System_run_msim_rtl_verilog.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module signalcontrol
+# -- Compiling module oneStep
+# -- Compiling module signalunit
+# 
+# Top level modules:
+# 	signalunit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module signextmux
+# -- Compiling module register_1bit
+# -- Compiling module register
+# -- Compiling module decoder_4to16
+# -- Compiling module registerfile
+# -- Compiling module armreduced
+# 
+# Top level modules:
+# 	armreduced
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/alu.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ArithUnit
+# -- Compiling module ALUopdecoder
+# -- Compiling module LogicUnit
+# -- Compiling module ALU32bit
+# 
+# Top level modules:
+# 	ALUopdecoder
+# 	ALU32bit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM_System.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ARM_System
+# 
+# Top level modules:
+# 	ARM_System
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/TxUnit.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module TxUnit
+# 
+# Top level modules:
+# 	TxUnit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/clkUnit.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ClkUnit
+# 
+# Top level modules:
+# 	ClkUnit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/miniUART.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module miniUART
+# 
+# Top level modules:
+# 	miniUART
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/RxUnit.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module RxUnit
+# 
+# Top level modules:
+# 	RxUnit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer/TimerCounter.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module TimerCounter
+# 
+# Top level modules:
+# 	TimerCounter
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO/GPIO.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module GPIO
+# -- Compiling module key_detect
+# 
+# Top level modules:
+# 	GPIO
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder/Addr_Decoder.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module Addr_Decoder
+# 
+# Top level modules:
+# 	Addr_Decoder
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ALTPLL_clkgen
+# 
+# Top level modules:
+# 	ALTPLL_clkgen
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ram2port_inst_data
+# 
+# Top level modules:
+# 	ram2port_inst_data
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db/altpll_clkgen_altpll.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ALTPLL_clkgen_altpll
+# 
+# Top level modules:
+# 	ALTPLL_clkgen_altpll
+# 
+vsim +altera -do ARM_System_run_msim_rtl_verilog.do -l msim_transcript -gui work.ARM_System
+# vsim +altera -do ARM_System_run_msim_rtl_verilog.do -l msim_transcript -gui work.ARM_System 
+# Loading work.ARM_System
+# Loading work.ALTPLL_clkgen
+# ** Error: (vsim-3033) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v(98): Instantiation of 'altpll' failed. The design unit was not found.
+# 
+#         Region: /ARM_System/pll0
+#         Searched libraries:
+#             C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/simulation/modelsim/rtl_work
+# Loading work.armreduced
+# Loading work.register
+# Loading work.register_1bit
+# Loading work.signalunit
+# Loading work.oneStep
+# Loading work.signalcontrol
+# Loading work.registerfile
+# Loading work.decoder_4to16
+# Loading work.signextmux
+# Loading work.ALUopdecoder
+# Loading work.ALU32bit
+# Loading work.LogicUnit
+# Loading work.ArithUnit
+# Loading work.ram2port_inst_data
+# ** Error: (vsim-3033) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v(107): Instantiation of 'altsyncram' failed. The design unit was not found.
+# 
+#         Region: /ARM_System/Inst_Data_Mem
+#         Searched libraries:
+#             C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/simulation/modelsim/rtl_work
+# Loading work.Addr_Decoder
+# Loading work.TimerCounter
+# Loading work.miniUART
+# Loading work.ClkUnit
+# Loading work.TxUnit
+# Loading work.RxUnit
+# Loading work.GPIO
+# Loading work.key_detect
+# Error loading design
+vsim +altera -do ARM_System_run_msim_rtl_verilog.do -l msim_transcript -gui work.armreduced
+# vsim +altera -do ARM_System_run_msim_rtl_verilog.do -l msim_transcript -gui work.armreduced 
+# Loading work.armreduced
+# Loading work.register
+# Loading work.register_1bit
+# Loading work.signalunit
+# Loading work.oneStep
+# Loading work.signalcontrol
+# Loading work.registerfile
+# Loading work.decoder_4to16
+# Loading work.signextmux
+# Loading work.ALUopdecoder
+# Loading work.ALU32bit
+# Loading work.LogicUnit
+# Loading work.ArithUnit
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(174): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/A_Register
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(175): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/B_Register
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(177): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/ALUoutRegister
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(178): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/B_MEM_Register
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(180): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/MDR
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(181): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/B_WB_Register
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(182): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/ALUout_WB_Register
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v(138): [PCDPC] - Port size (12 or 12) does not match connection size (1) for port 'flags'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v(2).
+# 
+#         Region: /armreduced/SignalControl/bring_if
+# ** Warning: (vsim-3015) C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(113): [PCDPC] - Port size (1 or 1) does not match connection size (32) for port 'write'. The port definition is at: C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v(45).
+# 
+#         Region: /armreduced/RegisterFile/register15
+# do ARM_System_run_msim_rtl_verilog.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Modifying modelsim.ini
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ctrlSig.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module signalcontrol
+# -- Compiling module oneStep
+# -- Compiling module signalunit
+# 
+# Top level modules:
+# 	signalunit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/ARMCPU.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module signextmux
+# -- Compiling module register_1bit
+# -- Compiling module register
+# -- Compiling module decoder_4to16
+# -- Compiling module registerfile
+# -- Compiling module armreduced
+# 
+# Top level modules:
+# 	armreduced
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM/alu.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ArithUnit
+# -- Compiling module ALUopdecoder
+# -- Compiling module LogicUnit
+# -- Compiling module ALU32bit
+# 
+# Top level modules:
+# 	ALUopdecoder
+# 	ALU32bit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/ARM_System.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ARM_System
+# 
+# Top level modules:
+# 	ARM_System
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/TxUnit.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module TxUnit
+# 
+# Top level modules:
+# 	TxUnit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/clkUnit.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ClkUnit
+# 
+# Top level modules:
+# 	ClkUnit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/miniUART.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module miniUART
+# 
+# Top level modules:
+# 	miniUART
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/UART/RxUnit.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module RxUnit
+# 
+# Top level modules:
+# 	RxUnit
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Timer/TimerCounter.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module TimerCounter
+# 
+# Top level modules:
+# 	TimerCounter
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/GPIO/GPIO.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module GPIO
+# -- Compiling module key_detect
+# 
+# Top level modules:
+# 	GPIO
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Decoder/Addr_Decoder.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module Addr_Decoder
+# 
+# Top level modules:
+# 	Addr_Decoder
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Altera_PLL/ALTPLL_clkgen.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ALTPLL_clkgen
+# 
+# Top level modules:
+# 	ALTPLL_clkgen
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System/Alera_Mem_Dual_Port/ram2port_inst_data.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ram2port_inst_data
+# 
+# Top level modules:
+# 	ram2port_inst_data
+# vlog -vlog01compat -work work +incdir+C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db {C:/Users/dinle/Code/Assignment/Assignmnet_2023_1/CA/TermProject_Multicycle/ARM_System_Syn/db/altpll_clkgen_altpll.v}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ALTPLL_clkgen_altpll
+# 
+# Top level modules:
+# 	ALTPLL_clkgen_altpll
+# 
+add wave -position insertpoint sim:/armreduced/*
